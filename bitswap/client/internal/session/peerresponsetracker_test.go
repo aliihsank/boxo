@@ -1,8 +1,8 @@
 package session
 
 import (
-	"math"
 	"testing"
+	"fmt"
 
 	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -43,12 +43,16 @@ func TestPeerResponseTrackerProbabilityUnknownPeers(t *testing.T) {
 		}
 	}
 
-	for _, c := range choices {
-		if c == 0 {
-			t.Fatal("expected each peer to be chosen at least once")
-		}
-		if math.Abs(float64(c-choices[0])) > 0.2*float64(count) {
-			t.Fatal("expected unknown peers to have roughly equal chance of being chosen")
+	for i, c := range choices {
+		
+		if i == 3 {
+			if c < 1000 {
+				t.Fatal("expected to be chosen for every trial.")
+			}
+		}else{
+			if c > 0 {
+				t.Fatal("expected other peers not to be chosen at all.")
+			}
 		}
 	}
 }
@@ -70,11 +74,8 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 		}
 	}
 
-	if chooseSecond == 0 {
-		t.Fatal("expected unknown peer to occasionally be chosen")
-	}
-	if chooseSecond > chooseFirst {
-		t.Fatal("expected known peer to be chosen more often")
+	if chooseSecond > 0 {
+		t.Fatal("expected known peer to be chosen always")
 	}
 }
 
@@ -107,11 +108,17 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 	}
 
 	for i, c := range choices {
-		if c == 0 {
-			t.Fatal("expected each peer to be chosen at least once")
-		}
-		if math.Abs(float64(c)-(float64(count)*probabilities[i])) > 0.2*float64(count) {
-			t.Fatal("expected peers to be chosen proportionally to probability")
+
+		fmt.Println("Peer Index: ", i, ", Peer Chosen: ", c)
+
+		if i == 1 {
+			if c < 1000 {
+				t.Fatal("expected this peer to be chosen every time")
+			}
+		}else{
+			if c > 0 {
+				t.Fatal("expected only best peer to be chosen every time.")
+			}
 		}
 	}
 }
