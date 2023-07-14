@@ -3,6 +3,7 @@ package session
 import (
 	"math"
 	"testing"
+	"fmt"
 
 	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -82,6 +83,11 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 	peers := testutil.GeneratePeers(3)
 	prt := newPeerResponseTracker()
 
+	// receiveDummyBlocks that will be out of treshold
+	for i := 0; i < 1000; i++ {
+		prt.receivedBlockFrom(peers[0])
+	}
+
 	probabilities := []float64{0.1, 0.6, 0.3}
 	count := 1000
 	for pi, prob := range probabilities {
@@ -110,6 +116,9 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
 		}
+
+		fmt.Println("Peer Index: ", i, ", Peer Chosen: ", c)
+
 		if math.Abs(float64(c)-(float64(count)*probabilities[i])) > 0.2*float64(count) {
 			t.Fatal("expected peers to be chosen proportionally to probability")
 		}
