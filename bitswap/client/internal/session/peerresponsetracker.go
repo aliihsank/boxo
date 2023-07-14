@@ -2,7 +2,7 @@ package session
 
 import (
 	"math/rand"
-
+	"container/list"
 	peer "github.com/libp2p/go-libp2p/core/peer"
 )
 
@@ -10,11 +10,15 @@ import (
 // to send us a block for a given CID (used to rank peers)
 type peerResponseTracker struct {
 	firstResponder map[peer.ID]int
+	respondQueue *list.List
+	respondCountTreshold int
 }
 
 func newPeerResponseTracker() *peerResponseTracker {
 	return &peerResponseTracker{
 		firstResponder: make(map[peer.ID]int),
+		respondQueue: list.New(),
+		respondCountTreshold: 100,
 	}
 }
 
@@ -22,6 +26,16 @@ func newPeerResponseTracker() *peerResponseTracker {
 // (only called first time block is received)
 func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID) {
 	prt.firstResponder[from]++
+
+	prt.respondQueue.PushBack(from)
+	
+	if prt.respondQueue.Len() > prt.respondCountTreshold {
+		front := prt.respondQueue.Front()
+		
+		prt.firstResponder[front.Value.(peer.ID)]--
+
+		prt.respondQueue.Remove(front)
+	}
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
