@@ -286,6 +286,9 @@ func (sws *sessionWantSender) onChange(changes []change) {
 	// Update peer availability
 	newlyAvailable, newlyUnavailable := sws.processAvailability(availability)
 
+	// TODO: Ali - Burada newlyAvailable içeriği dolu ise peerRspnTrckr içindeki liste sıfırlanabilir.
+	// TODO: Ali - sws.peerRspTrkr.checkForNewPeers(newlyAvailable)
+	
 	// Update wants
 	dontHaves := sws.processUpdates(updates)
 
