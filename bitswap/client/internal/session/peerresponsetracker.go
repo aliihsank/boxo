@@ -36,14 +36,14 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	// Find the total received blocks for all candidate peers
 	total := 0
 	for _, p := range peers {
-		total += prt.getPeerCount(p)
+		total += prt.getFirstRespondCountForPeer(p)
 	}
 
 	// Choose one of the peers with a chance proportional to the number
 	// of blocks received from that peer
 	counted := 0.0
 	for _, p := range peers {
-		counted += float64(prt.getPeerCount(p)) / float64(total)
+		counted += float64(prt.getFirstRespondCountForPeer(p)) / float64(total)
 		if counted > rnd {
 			return p
 		}
@@ -56,9 +56,9 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	return peers[index]
 }
 
-// getPeerCount returns the number of times the peer was first to send us a
+// getFirstRespondCountForPeer returns the number of times the peer was first to send us a
 // block plus one (in order to never get a zero chance).
-func (prt *peerResponseTracker) getPeerCount(p peer.ID) int {
+func (prt *peerResponseTracker) getFirstRespondCountForPeer(p peer.ID) int {
 	// Make sure there is always at least a small chance a new peer
 	// will be chosen
 	return prt.firstResponder[p] + 1
