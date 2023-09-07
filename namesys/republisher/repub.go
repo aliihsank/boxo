@@ -7,13 +7,13 @@ import (
 	"errors"
 	"time"
 
-	keystore "github.com/ipfs/boxo/keystore"
-	"github.com/ipfs/boxo/namesys"
-	"github.com/ipfs/boxo/path"
+	keystore "github.com/aliihsank/boxo/keystore"
+	"github.com/aliihsank/boxo/namesys"
+	"github.com/aliihsank/boxo/path"
 	"go.opentelemetry.io/otel/attribute"
 
-	opts "github.com/ipfs/boxo/coreiface/options/namesys"
-	"github.com/ipfs/boxo/ipns"
+	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
+	"github.com/aliihsank/boxo/ipns"
 	ds "github.com/ipfs/go-datastore"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/jbenet/goprocess"

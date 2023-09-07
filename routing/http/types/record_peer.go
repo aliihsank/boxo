@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/ipfs/boxo/routing/http/internal/drjson"
+	"github.com/aliihsank/boxo/routing/http/internal/drjson"
 	"github.com/libp2p/go-libp2p/core/peer"
 )
 

@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	ipns "github.com/ipfs/boxo/ipns"
-	path "github.com/ipfs/boxo/path"
-	mockrouting "github.com/ipfs/boxo/routing/mock"
+	ipns "github.com/aliihsank/boxo/ipns"
+	path "github.com/aliihsank/boxo/path"
+	mockrouting "github.com/aliihsank/boxo/routing/mock"
 	ds "github.com/ipfs/go-datastore"
 	dssync "github.com/ipfs/go-datastore/sync"
 	tnet "github.com/libp2p/go-libp2p-testing/net"

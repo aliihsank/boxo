@@ -3,9 +3,9 @@ package iface
 import (
 	"context"
 
-	"github.com/ipfs/boxo/coreiface/path"
+	"github.com/aliihsank/boxo/coreiface/path"
 
-	"github.com/ipfs/boxo/coreiface/options"
+	"github.com/aliihsank/boxo/coreiface/options"
 
 	"github.com/libp2p/go-libp2p/core/peer"
 )

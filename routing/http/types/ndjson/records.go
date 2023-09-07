@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/ipfs/boxo/routing/http/types"
-	"github.com/ipfs/boxo/routing/http/types/iter"
+	"github.com/aliihsank/boxo/routing/http/types"
+	"github.com/aliihsank/boxo/routing/http/types/iter"
 )
 
 // NewRecordsIter returns an iterator that reads [types.Record] from the given [io.Reader].

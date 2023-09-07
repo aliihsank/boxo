@@ -1,4 +1,4 @@
-module github.com/ipfs/boxo/cmd/deprecator
+module github.com/aliihsank/boxo/cmd/deprecator
 
 go 1.20
 

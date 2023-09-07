@@ -20,8 +20,8 @@ import (
 	"time"
 
 	lru "github.com/hashicorp/golang-lru/v2"
-	opts "github.com/ipfs/boxo/coreiface/options/namesys"
-	"github.com/ipfs/boxo/path"
+	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
+	"github.com/aliihsank/boxo/path"
 	"github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"
 	dssync "github.com/ipfs/go-datastore/sync"

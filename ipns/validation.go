@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	ipns_pb "github.com/ipfs/boxo/ipns/pb"
+	ipns_pb "github.com/aliihsank/boxo/ipns/pb"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	basicnode "github.com/ipld/go-ipld-prime/node/basic"
 	record "github.com/libp2p/go-libp2p-record"

@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 
-	"github.com/ipfs/boxo/routing/http/types"
+	"github.com/aliihsank/boxo/routing/http/types"
 )
 
 // ProvidersResponse is the result of a GET Providers request.

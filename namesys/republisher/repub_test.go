@@ -14,15 +14,15 @@ import (
 	peer "github.com/libp2p/go-libp2p/core/peer"
 	routing "github.com/libp2p/go-libp2p/core/routing"
 
-	opts "github.com/ipfs/boxo/coreiface/options/namesys"
-	"github.com/ipfs/boxo/ipns"
-	"github.com/ipfs/boxo/path"
+	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
+	"github.com/aliihsank/boxo/ipns"
+	"github.com/aliihsank/boxo/path"
 	ds "github.com/ipfs/go-datastore"
 	dssync "github.com/ipfs/go-datastore/sync"
 
-	keystore "github.com/ipfs/boxo/keystore"
-	"github.com/ipfs/boxo/namesys"
-	. "github.com/ipfs/boxo/namesys/republisher"
+	keystore "github.com/aliihsank/boxo/keystore"
+	"github.com/aliihsank/boxo/namesys"
+	. "github.com/aliihsank/boxo/namesys/republisher"
 )
 
 type mockNode struct {

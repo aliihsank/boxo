@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/bits"
 
-	"github.com/ipfs/boxo/ipld/unixfs/internal"
+	"github.com/aliihsank/boxo/ipld/unixfs/internal"
 
 	"github.com/spaolacci/murmur3"
 )

@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"github.com/ipfs/boxo/fetcher"
+	"github.com/aliihsank/boxo/fetcher"
 	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-ipld-prime"
 	cidlink "github.com/ipld/go-ipld-prime/linking/cid"

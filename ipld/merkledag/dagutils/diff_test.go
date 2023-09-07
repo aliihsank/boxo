@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	dag "github.com/ipfs/boxo/ipld/merkledag"
-	mdtest "github.com/ipfs/boxo/ipld/merkledag/test"
+	dag "github.com/aliihsank/boxo/ipld/merkledag"
+	mdtest "github.com/aliihsank/boxo/ipld/merkledag/test"
 	cid "github.com/ipfs/go-cid"
 	ipld "github.com/ipfs/go-ipld-format"
 )

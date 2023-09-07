@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/proto"
-	dshelp "github.com/ipfs/boxo/datastore/dshelp"
+	dshelp "github.com/aliihsank/boxo/datastore/dshelp"
 	"github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"
 	record "github.com/libp2p/go-libp2p-record"

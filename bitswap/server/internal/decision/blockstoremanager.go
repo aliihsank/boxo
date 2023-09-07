@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	bstore "github.com/ipfs/boxo/blockstore"
+	bstore "github.com/aliihsank/boxo/blockstore"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 	ipld "github.com/ipfs/go-ipld-format"

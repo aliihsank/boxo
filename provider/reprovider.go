@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ipfs/boxo/provider/internal/queue"
-	"github.com/ipfs/boxo/verifcid"
+	"github.com/aliihsank/boxo/provider/internal/queue"
+	"github.com/aliihsank/boxo/verifcid"
 	"github.com/ipfs/go-cid"
 	"github.com/ipfs/go-datastore"
 	"github.com/ipfs/go-datastore/namespace"

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	dshelp "github.com/ipfs/boxo/datastore/dshelp"
+	dshelp "github.com/aliihsank/boxo/datastore/dshelp"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"

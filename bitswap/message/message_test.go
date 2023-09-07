@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/ipfs/boxo/bitswap/client/wantlist"
-	pb "github.com/ipfs/boxo/bitswap/message/pb"
+	"github.com/aliihsank/boxo/bitswap/client/wantlist"
+	pb "github.com/aliihsank/boxo/bitswap/message/pb"
 	blocksutil "github.com/ipfs/go-ipfs-blocksutil"
 
-	u "github.com/ipfs/boxo/util"
+	u "github.com/aliihsank/boxo/util"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 )

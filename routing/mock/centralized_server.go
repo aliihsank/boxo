@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ipfs/boxo/routing/offline"
+	"github.com/aliihsank/boxo/routing/offline"
 	"github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"
 	dssync "github.com/ipfs/go-datastore/sync"

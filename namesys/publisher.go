@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	opts "github.com/ipfs/boxo/coreiface/options/namesys"
-	"github.com/ipfs/boxo/ipns"
-	"github.com/ipfs/boxo/path"
+	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
+	"github.com/aliihsank/boxo/ipns"
+	"github.com/aliihsank/boxo/path"
 	ds "github.com/ipfs/go-datastore"
 	dsquery "github.com/ipfs/go-datastore/query"
 	"github.com/libp2p/go-libp2p/core/crypto"

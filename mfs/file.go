@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"sync"
 
-	dag "github.com/ipfs/boxo/ipld/merkledag"
-	ft "github.com/ipfs/boxo/ipld/unixfs"
-	mod "github.com/ipfs/boxo/ipld/unixfs/mod"
+	dag "github.com/aliihsank/boxo/ipld/merkledag"
+	ft "github.com/aliihsank/boxo/ipld/unixfs"
+	mod "github.com/aliihsank/boxo/ipld/unixfs/mod"
 
-	chunker "github.com/ipfs/boxo/chunker"
+	chunker "github.com/aliihsank/boxo/chunker"
 	ipld "github.com/ipfs/go-ipld-format"
 )
 

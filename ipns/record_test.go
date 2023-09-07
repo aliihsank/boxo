@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	ipns_pb "github.com/ipfs/boxo/ipns/pb"
-	"github.com/ipfs/boxo/path"
-	"github.com/ipfs/boxo/util"
+	ipns_pb "github.com/aliihsank/boxo/ipns/pb"
+	"github.com/aliihsank/boxo/path"
+	"github.com/aliihsank/boxo/util"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"
 	basicnode "github.com/ipld/go-ipld-prime/node/basic"
 	ic "github.com/libp2p/go-libp2p/core/crypto"

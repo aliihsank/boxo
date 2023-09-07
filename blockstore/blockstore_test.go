@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	u "github.com/ipfs/boxo/util"
+	u "github.com/aliihsank/boxo/util"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"
@@ -119,7 +119,7 @@ func TestPutUsesHas(t *testing.T) {
 	// Some datastores rely on the implementation detail that Put checks Has
 	// first, to avoid overriding existing objects' metadata. This test ensures
 	// that Blockstore continues to behave this way.
-	// Please ping https://github.com/ipfs/boxo/blockstore/pull/47 if this
+	// Please ping https://github.com/aliihsank/boxo/blockstore/pull/47 if this
 	// behavior is being removed.
 	ds := &countHasDS{
 		Datastore: ds.NewMapDatastore(),
