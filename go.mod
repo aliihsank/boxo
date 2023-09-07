@@ -170,3 +170,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/blake3 v1.2.1 // indirect
 )
+
+replace github.com/ipfs/boxo => github.com/aliihsank/boxo v0.0.0-20230907130235-5b753e0031a1
