@@ -113,14 +113,54 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 	}
 
 	for i, c := range choices {
+		fmt.Println("Peer Index: ", i, ", Peer Chosen: ", c)
+
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
 		}
 
-		fmt.Println("Peer Index: ", i, ", Peer Chosen: ", c)
-
 		if math.Abs(float64(c)-(float64(count)*probabilities[i])) > 0.2*float64(count) {
 			t.Fatal("expected peers to be chosen proportionally to probability")
+		}
+	}
+}
+
+func TestPeerResponseTrackerProbabilityProportionalNew(t *testing.T) {
+	peers := testutil.GeneratePeers(3)
+	prt := newPeerResponseTracker()
+
+	// receive dummy blocks that will be out of treshold in the future
+	for i := 0; i < 7000; i++ {
+		prt.receivedBlockFrom(peers[0])
+	}
+
+	for i := 0; i < 600; i++ {
+		prt.receivedBlockFrom(peers[1])
+	}
+
+	var choices []int
+	for i := 0; i < 3; i++ {
+		choices = append(choices, 0)
+	}
+
+	count := 1000
+	for i := 0; i < count; i++ {
+		p := prt.choose(peers)
+		if p == peers[0] {
+			choices[0]++
+		} else if p == peers[1] {
+			choices[1]++
+		} else if p == peers[2] {
+			choices[2]++
+		}
+	}
+
+	for i, c := range choices {
+
+		fmt.Println("Peer Index: ", i, ", Peer Chosen: ", c)
+
+		if c == 0 {
+			t.Fatal("expected each peer to be chosen at least once: i:", i, ", c: ", c)
 		}
 	}
 }
