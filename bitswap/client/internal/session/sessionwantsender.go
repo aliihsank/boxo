@@ -2,6 +2,7 @@ package session
 
 import (
 	"context"
+	"time"
 
 	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
 
@@ -693,6 +694,10 @@ type wantInfo struct {
 	peerRspTrkr *peerResponseTracker
 	// true if all known peers have sent a DONT_HAVE for this want
 	exhausted bool
+	// want info create time is kept to calculate response time
+	createTime int64
+	// Response times for want info
+	responseTime map[peer.ID]int64
 }
 
 // func newWantInfo(prt *peerResponseTracker, c cid.Cid, startIndex int) *wantInfo {
@@ -701,12 +706,19 @@ func newWantInfo(prt *peerResponseTracker) *wantInfo {
 		blockPresence: make(map[peer.ID]BlockPresence),
 		peerRspTrkr:   prt,
 		exhausted:     false,
+		createTime:    (time.Now().UnixNano() / int64(time.Millisecond)),
+		responseTime:  make(map[peer.ID]int64),
 	}
+}
+
+func (wi *wantInfo) updateResponseTime(p peer.ID){
+	wi.responseTime[p] = (time.Now().UnixNano() / int64(time.Millisecond)) - wi.createTime
 }
 
 // setPeerBlockPresence sets the block presence for the given peer
 func (wi *wantInfo) setPeerBlockPresence(p peer.ID, bp BlockPresence) {
 	wi.blockPresence[p] = bp
+	wi.updateResponseTime(p)
 	wi.calculateBestPeer()
 
 	// If a peer informed us that it has a block then make sure the want is no
