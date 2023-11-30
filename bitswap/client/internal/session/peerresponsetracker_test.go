@@ -1,8 +1,9 @@
 package session
 
 import (
-	"math"
+ 	"math"
 	"testing"
+	"fmt"
 
 	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -22,7 +23,7 @@ func TestPeerResponseTrackerInit(t *testing.T) {
 	if p != peers[0] && p != peers[1] {
 		t.Fatal("expected randomly chosen peer")
 	}
-}
+} 
 
 func TestPeerResponseTrackerProbabilityUnknownPeers(t *testing.T) {
 	peers := testutil.GeneratePeers(4)
@@ -44,6 +45,7 @@ func TestPeerResponseTrackerProbabilityUnknownPeers(t *testing.T) {
 	}
 
 	for _, c := range choices {
+		
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
 		}
@@ -57,7 +59,8 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 	peers := testutil.GeneratePeers(2)
 	prt := newPeerResponseTracker()
 
-	prt.receivedBlockFrom(peers[0])
+	prt.receivedWantHaveResponse(peers[0], 10)
+	prt.receivedBlockFrom(peers[0], 10)
 
 	chooseFirst := 0
 	chooseSecond := 0
@@ -70,6 +73,8 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 		}
 	}
 
+	fmt.Println("chooseFirst: ", chooseFirst, ", chooseSecond: ", chooseSecond)
+
 	if chooseSecond == 0 {
 		t.Fatal("expected unknown peer to occasionally be chosen")
 	}
@@ -79,23 +84,30 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 }
 
 func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
-	peers := testutil.GeneratePeers(3)
+	peerCount := 3
+	peers := testutil.GeneratePeers(peerCount)
 	prt := newPeerResponseTracker()
 
-	probabilities := []float64{0.1, 0.6, 0.3}
-	count := 1000
-	for pi, prob := range probabilities {
-		for i := 0; float64(i) < float64(count)*prob; i++ {
-			prt.receivedBlockFrom(peers[pi])
+	wantHaveResponseDurations := []int64{10, 60, 30}
+	for pi, duration := range wantHaveResponseDurations {
+		prt.receivedWantHaveResponse(peers[pi], duration)
+	}
+
+	avgBlockResponseDuration := []int64{10, 60, 30}
+	receivedBlockCount := 3
+	for pi, duration := range avgBlockResponseDuration {
+		for i := 0; i < receivedBlockCount; i++ {
+			prt.receivedBlockFrom(peers[pi], duration)
 		}
 	}
 
 	var choices []int
-	for range probabilities {
+	for range wantHaveResponseDurations {
 		choices = append(choices, 0)
 	}
 
-	for i := 0; i < count; i++ {
+	chooseCount := 1000
+	for i := 0; i < chooseCount; i++ {
 		p := prt.choose(peers)
 		if p == peers[0] {
 			choices[0]++
@@ -106,12 +118,70 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 		}
 	}
 
+	peerValues := []float64{0.667, 0.110, 0.221} // normalized values
+
 	for i, c := range choices {
+
+		fmt.Println("Peer: ", i, ", Amount: ", c)
+
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
 		}
-		if math.Abs(float64(c)-(float64(count)*probabilities[i])) > 0.2*float64(count) {
-			t.Fatal("expected peers to be chosen proportionally to probability")
+
+
+		if math.Abs(float64(c)-(float64(chooseCount)*peerValues[i])) > 0.2*float64(chooseCount) {
+			t.Fatal("expected peers to be chosen proportionally to peer value")
+		}
+	}
+}
+
+func TestPeerResponseTrackerProbabilityProportional_For_Different_WantHaveResponse_And_BlockResponse_Duration(t *testing.T) {
+	peerCount := 3
+	peers := testutil.GeneratePeers(peerCount)
+	prt := newPeerResponseTracker()
+
+	lastWantHaveResponseDurations := []int64{10, 60, 30}
+	for pi, duration := range lastWantHaveResponseDurations {
+		prt.receivedWantHaveResponse(peers[pi], duration)
+	}
+
+	avgBlockResponseDuration := []int64{30, 60, 10}
+	receivedBlockCount := 3
+	for pi, duration := range avgBlockResponseDuration {
+		for i := 0; i < receivedBlockCount; i++ {
+			prt.receivedBlockFrom(peers[pi], duration)
+		}
+	}
+
+	var choices []int
+	for range lastWantHaveResponseDurations {
+		choices = append(choices, 0)
+	}
+
+	chooseCount := 1000
+	for i := 0; i < chooseCount; i++ {
+		p := prt.choose(peers)
+		if p == peers[0] {
+			choices[0]++
+		} else if p == peers[1] {
+			choices[1]++
+		} else if p == peers[2] {
+			choices[2]++
+		}
+	}
+
+	peerValues := []float64{0.42857, 0.1428, 0.42857} // normalized values
+
+	for i, c := range choices {
+
+		// TODO: fmt.Println("Peer: ", i, ", Amount: ", c)
+
+		if c == 0 {
+			t.Fatal("expected each peer to be chosen at least once")
+		}
+
+		if math.Abs(float64(c)-(float64(chooseCount)*peerValues[i])) > 0.2*float64(chooseCount) {
+			t.Fatal("expected peers to be chosen proportionally to peer value")
 		}
 	}
 }

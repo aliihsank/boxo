@@ -379,7 +379,9 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			if removed != nil {
 				// Inform the peer tracker that this peer was the first to send
 				// us the block
-				sws.peerRspTrkr.receivedBlockFrom(upd.from)
+				responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - removed.wantBlockSendTime[upd.from]
+
+				sws.peerRspTrkr.receivedBlockFrom(upd.from, responseDuration)
 
 				// Protect the connection to this peer so that we can ensure
 				// that the connection doesn't get pruned by the connection
@@ -410,6 +412,11 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			dontHaves.Add(c)
 
+			// keep track of current response duration of Want-Have response
+			wi := sws.wants[c]
+			responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - wi.wantHaveSendTime[upd.from]
+			sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+
 			// Update the block presence for the peer
 			sws.updateWantBlockPresence(c, upd.from)
 
@@ -428,6 +435,12 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 	// Process received HAVEs
 	for _, upd := range updates {
 		for _, c := range upd.haves {
+
+			// keep track of current response duration of Want-Have response
+			wi := sws.wants[c]
+			responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - wi.wantHaveSendTime[upd.from]
+			sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+
 			// If we haven't already received a block for the want
 			if !blkCids.Has(c) {
 				// Update the block presence for the peer
@@ -580,6 +593,18 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 			snd.wantHaves.Add(c)
 		}
 
+		// set send time for every want-have that is sent to peer p
+		for _, c := range snd.wantHaves.Keys() {
+			wi := sws.wants[c]
+			wi.wantHaveSendTime[p] = time.Now().UnixNano() / int64(time.Millisecond)
+		}
+
+		// set send time for every want-block that is sent to peer p
+		for _, c := range snd.wantBlocks.Keys() {
+			wi := sws.wants[c]
+			wi.wantBlockSendTime[p] = time.Now().UnixNano() / int64(time.Millisecond)
+		}
+
 		// Send the wants to the peer.
 		// Note that the PeerManager ensures that we don't sent duplicate
 		// want-haves / want-blocks to a peer, and that want-blocks take
@@ -694,31 +719,26 @@ type wantInfo struct {
 	peerRspTrkr *peerResponseTracker
 	// true if all known peers have sent a DONT_HAVE for this want
 	exhausted bool
-	// want info create time is kept to calculate response time
-	createTime int64
-	// Response times for want info
-	responseTime map[peer.ID]int64
+	// WANT-HAVE send time for every peer is kept to calculate current WANT-HAVE response time
+	wantHaveSendTime map[peer.ID]int64
+	// want info send time for every peer is kept to calculate current WANT-BLOCK response time
+	wantBlockSendTime map[peer.ID]int64
 }
 
 // func newWantInfo(prt *peerResponseTracker, c cid.Cid, startIndex int) *wantInfo {
 func newWantInfo(prt *peerResponseTracker) *wantInfo {
 	return &wantInfo{
-		blockPresence: make(map[peer.ID]BlockPresence),
-		peerRspTrkr:   prt,
-		exhausted:     false,
-		createTime:    (time.Now().UnixNano() / int64(time.Millisecond)),
-		responseTime:  make(map[peer.ID]int64),
+		blockPresence: 		make(map[peer.ID]BlockPresence),
+		peerRspTrkr:   		prt,
+		exhausted:     		false,
+		wantHaveSendTime:   make(map[peer.ID]int64),
+		wantBlockSendTime:	make(map[peer.ID]int64),
 	}
-}
-
-func (wi *wantInfo) updateResponseTime(p peer.ID){
-	wi.responseTime[p] = (time.Now().UnixNano() / int64(time.Millisecond)) - wi.createTime
 }
 
 // setPeerBlockPresence sets the block presence for the given peer
 func (wi *wantInfo) setPeerBlockPresence(p peer.ID, bp BlockPresence) {
 	wi.blockPresence[p] = bp
-	wi.updateResponseTime(p)
 	wi.calculateBestPeer()
 
 	// If a peer informed us that it has a block then make sure the want is no

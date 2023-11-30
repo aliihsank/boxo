@@ -10,18 +10,35 @@ import (
 // to send us a block for a given CID (used to rank peers)
 type peerResponseTracker struct {
 	firstResponder map[peer.ID]int
+	lastHaveResponseDuration map[peer.ID]int64
+	avgBlockResponseDuration map[peer.ID]int64
+	blockResponseCount map[peer.ID]int64
 }
 
 func newPeerResponseTracker() *peerResponseTracker {
 	return &peerResponseTracker{
 		firstResponder: make(map[peer.ID]int),
+		lastHaveResponseDuration: make(map[peer.ID]int64),
+		avgBlockResponseDuration: make(map[peer.ID]int64),
+		blockResponseCount: make(map[peer.ID]int64),
 	}
+}
+
+func (prt *peerResponseTracker) receivedWantHaveResponse(from peer.ID, responseDuration int64) {
+	prt.lastHaveResponseDuration[from] = responseDuration
 }
 
 // receivedBlockFrom is called when a block is received from a peer
 // (only called first time block is received)
-func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID) {
+func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID, responseDuration int64) {
 	prt.firstResponder[from]++
+
+	totalResponseDuration := prt.avgBlockResponseDuration[from] * prt.blockResponseCount[from]
+	totalResponseDuration += responseDuration
+	
+	prt.blockResponseCount[from]++
+
+	prt.avgBlockResponseDuration[from] = totalResponseDuration / prt.blockResponseCount[from]
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
@@ -34,16 +51,18 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	rnd := rand.Float64()
 
 	// Find the total received blocks for all candidate peers
-	total := 0
+	var total float64 = 0
 	for _, p := range peers {
-		total += prt.getPeerCount(p)
+		peerVal := prt.getPeerValue(p)
+		// fmt.Println("Peer: ", i, ", Value: ", peerVal)
+		total += peerVal
 	}
-
+	
 	// Choose one of the peers with a chance proportional to the number
 	// of blocks received from that peer
 	counted := 0.0
 	for _, p := range peers {
-		counted += float64(prt.getPeerCount(p)) / float64(total)
+		counted += float64(prt.getPeerValue(p)) / float64(total)
 		if counted > rnd {
 			return p
 		}
@@ -56,10 +75,36 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	return peers[index]
 }
 
-// getPeerCount returns the number of times the peer was first to send us a
-// block plus one (in order to never get a zero chance).
-func (prt *peerResponseTracker) getPeerCount(p peer.ID) int {
+func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 	// Make sure there is always at least a small chance a new peer
 	// will be chosen
-	return prt.firstResponder[p] + 1
+
+	// TODO: a + b = 1, a > b
+	a := 1.0
+	b := 1.0
+
+	peerValue := 1 / (a * prt.lastWantHaveResponseTime(p) + b * prt.wantBlockResponseDownloadAvg(p))
+
+	return peerValue
+}
+
+func (prt *peerResponseTracker) lastWantHaveResponseTime(p peer.ID) float64 {
+	duration := float64(prt.lastHaveResponseDuration[p]) 
+	
+	if duration == 0 {
+		duration = 1000 // TODO: Set this value appropriately, set a very big value
+	}
+
+	return duration
+}
+
+func (prt *peerResponseTracker) wantBlockResponseDownloadAvg(p peer.ID) float64 {
+	duration := float64(prt.avgBlockResponseDuration[p]) 
+	
+	// TODO: Bu değer silinecek
+	if duration == 0 {
+		duration = 1000 // TODO: Set this value appropriately
+	}
+
+	return duration
 }
