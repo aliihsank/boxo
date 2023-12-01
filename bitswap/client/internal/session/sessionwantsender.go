@@ -3,7 +3,7 @@ package session
 import (
 	"context"
 	"time"
-
+	
 	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
 
 	cid "github.com/ipfs/go-cid"
@@ -379,8 +379,7 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			if removed != nil {
 				// Inform the peer tracker that this peer was the first to send
 				// us the block
-				responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - removed.wantBlockSendTime[upd.from]
-
+				responseDuration := time.Now().UnixMilli() - removed.wantBlockSendTime[upd.from]
 				sws.peerRspTrkr.receivedBlockFrom(upd.from, responseDuration)
 
 				// Protect the connection to this peer so that we can ensure
@@ -413,9 +412,10 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			dontHaves.Add(c)
 
 			// keep track of current response duration of Want-Have response
-			wi := sws.wants[c]
-			responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - wi.wantHaveSendTime[upd.from]
-			sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+			if wi, ok := sws.wants[c]; ok {
+				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
+				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+			}
 
 			// Update the block presence for the peer
 			sws.updateWantBlockPresence(c, upd.from)
@@ -437,9 +437,10 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 		for _, c := range upd.haves {
 
 			// keep track of current response duration of Want-Have response
-			wi := sws.wants[c]
-			responseDuration := (time.Now().UnixNano() / int64(time.Millisecond)) - wi.wantHaveSendTime[upd.from]
-			sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+			if wi, ok := sws.wants[c]; ok {
+				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
+				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+			}
 
 			// If we haven't already received a block for the want
 			if !blkCids.Has(c) {
@@ -595,14 +596,16 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 
 		// set send time for every want-have that is sent to peer p
 		for _, c := range snd.wantHaves.Keys() {
-			wi := sws.wants[c]
-			wi.wantHaveSendTime[p] = time.Now().UnixNano() / int64(time.Millisecond)
+			if wi, ok := sws.wants[c]; ok {
+				wi.wantHaveSendTime[p] = time.Now().UnixMilli()
+			}
 		}
 
 		// set send time for every want-block that is sent to peer p
 		for _, c := range snd.wantBlocks.Keys() {
-			wi := sws.wants[c]
-			wi.wantBlockSendTime[p] = time.Now().UnixNano() / int64(time.Millisecond)
+			if wi, ok := sws.wants[c]; ok {
+				wi.wantBlockSendTime[p] = time.Now().UnixMilli()
+			}
 		}
 
 		// Send the wants to the peer.
