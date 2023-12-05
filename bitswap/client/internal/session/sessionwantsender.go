@@ -1,9 +1,10 @@
 package session
 
 import (
+	"fmt"
 	"context"
 	"time"
-	
+
 	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
 
 	cid "github.com/ipfs/go-cid"
@@ -614,6 +615,17 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		// precedence over want-haves.
 		wblks := snd.wantBlocks.Keys()
 		whaves := snd.wantHaves.Keys()
+
+		fmt.Println("Want-Block For Peer: ", p)
+		for _, c := range wblks {
+			fmt.Println("Block: ", c)
+		}
+
+		fmt.Println("Want-Have For Peer: ", p)
+		for _, c := range whaves {
+			fmt.Println("Block: ", c)
+		}
+		
 		sws.pm.SendWants(sws.ctx, p, wblks, whaves)
 
 		// Inform the session that we've sent the wants
