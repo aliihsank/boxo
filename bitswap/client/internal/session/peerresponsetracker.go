@@ -38,7 +38,7 @@ func (prt *peerResponseTracker) receivedWantHaveResponse(from peer.ID, responseD
 		presence = "BPHave"
 	}
 
-	fmt.Println("Received Want-Have response from: ", from, ", BP: ", presence)
+	fmt.Println("Received Want-Have response from: ", from, ", BP: ", presence, ", Duration: ", responseDuration)
 }
 
 // receivedBlockFrom is called when a block is received from a peer
