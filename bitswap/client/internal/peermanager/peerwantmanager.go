@@ -225,14 +225,12 @@ func (pwm *peerWantManager) sendWants(p peer.ID, wantBlocks []cid.Cid, wantHaves
 		}
 	}
 
-	fmt.Println("Sending Want-Block For Peer: ", p)
 	for _, c := range fltWantHvs {
-		fmt.Println("Block: ", c)
+		fmt.Println("Sending Want-Block For Peer: ", p, ", Block: ", c)
 	}
 
-	fmt.Println("Sending Want-Have For Peer: ", p)
 	for _, c := range fltWantBlks {
-		fmt.Println("Block: ", c)
+		fmt.Println("Sending Want-Have For Peer: ", p, ", Block: ", c)
 	}
 
 	// Send the want-blocks and want-haves to the peer
