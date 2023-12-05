@@ -59,7 +59,7 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 	peers := testutil.GeneratePeers(2)
 	prt := newPeerResponseTracker()
 
-	prt.receivedWantHaveResponse(peers[0], 10)
+	prt.receivedWantHaveResponse(peers[0], 10, BPHave)
 	prt.receivedBlockFrom(peers[0], 10)
 
 	chooseFirst := 0
@@ -90,7 +90,7 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 
 	wantHaveResponseDurations := []int64{10, 60, 30}
 	for pi, duration := range wantHaveResponseDurations {
-		prt.receivedWantHaveResponse(peers[pi], duration)
+		prt.receivedWantHaveResponse(peers[pi], duration, BPHave)
 	}
 
 	avgBlockResponseDuration := []int64{10, 60, 30}
@@ -142,7 +142,7 @@ func TestPeerResponseTrackerProbabilityProportional_For_Different_WantHaveRespon
 
 	lastWantHaveResponseDurations := []int64{10, 60, 30}
 	for pi, duration := range lastWantHaveResponseDurations {
-		prt.receivedWantHaveResponse(peers[pi], duration)
+		prt.receivedWantHaveResponse(peers[pi], duration, BPHave)
 	}
 
 	avgBlockResponseDuration := []int64{30, 60, 10}

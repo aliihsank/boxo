@@ -415,7 +415,7 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			// keep track of current response duration of Want-Have response
 			if wi, ok := sws.wants[c]; ok {
 				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPDontHave)
 			}
 
 			// Update the block presence for the peer
@@ -440,7 +440,7 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			// keep track of current response duration of Want-Have response
 			if wi, ok := sws.wants[c]; ok {
 				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPHave)
 			}
 
 			// If we haven't already received a block for the want
