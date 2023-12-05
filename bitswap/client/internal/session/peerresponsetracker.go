@@ -28,7 +28,17 @@ func newPeerResponseTracker() *peerResponseTracker {
 func (prt *peerResponseTracker) receivedWantHaveResponse(from peer.ID, responseDuration int64, bp BlockPresence) {
 	prt.lastHaveResponseDuration[from] = responseDuration
 
-	fmt.Println("Received Want-Have response from: ", from, ", BP: ", bp)
+	var presence string
+	switch bp {
+	case 0:
+		presence = "BPDontHave"
+	case 1:
+		presence = "BPUnknown"
+	case 2:
+		presence = "BPHave"
+	}
+
+	fmt.Println("Received Want-Have response from: ", from, ", BP: ", presence)
 }
 
 // receivedBlockFrom is called when a block is received from a peer
