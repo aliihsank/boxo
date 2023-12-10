@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"context"
 	"time"
 
@@ -467,6 +468,7 @@ func (s *Session) wantBlocks(ctx context.Context, newks []cid.Cid) {
 // Send want-haves to all connected peers
 func (s *Session) broadcastWantHaves(ctx context.Context, wants []cid.Cid) {
 	log.Debugw("broadcastWantHaves", "session", s.id, "cids", wants)
+	fmt.Println("Broadcasting Want-Haves:", wants)
 	s.pm.BroadcastWantHaves(ctx, wants)
 }
 
