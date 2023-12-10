@@ -259,13 +259,11 @@ func (sws *sessionWantSender) onChange(changes []change) {
 	for _, chng := range changes {
 		// Initialize info for new wants
 		for _, c := range chng.add {
-			fmt.Println("Creating new WantInfo (OnChange) for ", c)
 			sws.trackWant(c)
 		}
 
 		// Remove cancelled wants
 		for _, c := range chng.cancel {
-			fmt.Println("Deleting WantInfo for ", c)
 			sws.untrackWant(c)
 			cancels = append(cancels, c)
 		}
