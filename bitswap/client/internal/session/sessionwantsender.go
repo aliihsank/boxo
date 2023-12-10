@@ -619,7 +619,7 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantBlockSendTime[p] = time.Now().UnixMilli()
 				
-				fmt.Println("Generating Want-Block request for ", p)
+				fmt.Println("Generating Want-Block request for c: ", c, ", peer: ", p)
 			}
 		}
 
