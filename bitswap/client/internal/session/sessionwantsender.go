@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"context"
 	"time"
 
@@ -598,6 +599,8 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		for _, c := range snd.wantHaves.Keys() {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantHaveSendTime[p] = time.Now().UnixMilli()
+
+				fmt.Println("Generating Want-Have request for ", p)
 			}
 		}
 
@@ -605,6 +608,8 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		for _, c := range snd.wantBlocks.Keys() {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantBlockSendTime[p] = time.Now().UnixMilli()
+				
+				fmt.Println("Generating Want-Block request for ", p)
 			}
 		}
 
