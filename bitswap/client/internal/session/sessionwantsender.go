@@ -703,10 +703,13 @@ func (sws *sessionWantSender) updateWantBlockPresence(c cid.Cid, p peer.ID) {
 	// block presence for the peer / cid combination
 	switch {
 	case sws.bpm.PeerHasBlock(p, c):
+		fmt.Println("Block Presence (BPHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPHave)
 	case sws.bpm.PeerDoesNotHaveBlock(p, c):
+		fmt.Println("Block Presence (BPDontHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPDontHave)
 	default:
+		fmt.Println("Block Presence (BPUnknown) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPUnknown)
 	}
 }
