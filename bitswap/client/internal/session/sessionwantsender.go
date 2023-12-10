@@ -323,12 +323,14 @@ func (sws *sessionWantSender) processAvailability(availability map[peer.ID]bool)
 		if isNowAvailable {
 			isNewPeer := sws.spm.AddPeer(p)
 			if isNewPeer {
+				fmt.Println("Adding peer: ", p, " to session")
 				stateChange = true
 				newlyAvailable = append(newlyAvailable, p)
 			}
 		} else {
 			wasAvailable := sws.spm.RemovePeer(p)
 			if wasAvailable {
+				fmt.Println("Removing peer: ", p, " from session")
 				stateChange = true
 				newlyUnavailable = append(newlyUnavailable, p)
 			}
