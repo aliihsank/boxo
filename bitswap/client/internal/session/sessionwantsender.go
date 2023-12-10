@@ -259,7 +259,7 @@ func (sws *sessionWantSender) onChange(changes []change) {
 	for _, chng := range changes {
 		// Initialize info for new wants
 		for _, c := range chng.add {
-			fmt.Println("Creating new WantInfo OnChange for ", c)
+			fmt.Println("Creating new WantInfo (OnChange) for ", c)
 			sws.trackWant(c)
 		}
 
@@ -418,6 +418,9 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			// keep track of current response duration of Want-Have response
 			if wi, ok := sws.wants[c]; ok {
+				fmt.Println("TMP -- UPD FROM: ", upd.from)
+				fmt.Println("TMP -- Want-Have Send Time: ", wi.wantHaveSendTime[upd.from])
+				fmt.Println("TMP -- Now.Milli: ", time.Now().UnixMilli())
 				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
 				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPDontHave)
 			}

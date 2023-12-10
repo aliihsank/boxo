@@ -53,7 +53,7 @@ func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID, responseDuration
 
 	prt.avgBlockResponseDuration[from] = totalResponseDuration / prt.blockResponseCount[from]
 
-	fmt.Println("Received Block response from: ", from)
+	fmt.Println("Received Block response from: ", from, ", Duration: ", responseDuration)
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
