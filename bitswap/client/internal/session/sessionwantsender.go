@@ -604,7 +604,7 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantHaveSendTime[p] = time.Now().UnixMilli()
 
-				fmt.Println("Generating Want-Have request for ", p)
+				fmt.Println("Generating Want-Have request for c: ", c, "peer:", p)
 			}
 		}
 
