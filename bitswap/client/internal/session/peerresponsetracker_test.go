@@ -3,7 +3,6 @@ package session
 import (
  	"math"
 	"testing"
-	"fmt"
 
 	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -73,8 +72,6 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 		}
 	}
 
-	fmt.Println("chooseFirst: ", chooseFirst, ", chooseSecond: ", chooseSecond)
-
 	if chooseSecond == 0 {
 		t.Fatal("expected unknown peer to occasionally be chosen")
 	}
@@ -121,8 +118,6 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 	peerValues := []float64{0.667, 0.110, 0.221} // normalized values
 
 	for i, c := range choices {
-
-		fmt.Println("Peer: ", i, ", Amount: ", c)
 
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
@@ -173,8 +168,6 @@ func TestPeerResponseTrackerProbabilityProportional_For_Different_WantHaveRespon
 	peerValues := []float64{0.42857, 0.1428, 0.42857} // normalized values
 
 	for i, c := range choices {
-
-		// TODO: fmt.Println("Peer: ", i, ", Amount: ", c)
 
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")

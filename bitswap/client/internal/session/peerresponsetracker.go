@@ -69,7 +69,6 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	var total float64 = 0
 	for _, p := range peers {
 		peerVal := prt.getPeerValue(p)
-		// fmt.Println("Peer: ", i, ", Value: ", peerVal)
 		total += peerVal
 	}
 	
