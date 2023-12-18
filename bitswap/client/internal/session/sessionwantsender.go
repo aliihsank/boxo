@@ -420,6 +420,7 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			// Check if the DONT_HAVE is in response to a want-block
 			// (could also be in response to want-have)
 			if sws.swbt.haveSentWantBlockTo(upd.from, c) {
+				fmt.Println("In response to a WANT-BLOCK for: ", c, ", peer: ", upd.from)
 				// If we were waiting for a response from this peer, clear
 				// sentTo so that we can send the want to another peer
 				if sentTo, ok := sws.getWantSentTo(c); ok && sentTo == upd.from {
