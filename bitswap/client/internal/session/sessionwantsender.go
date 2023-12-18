@@ -1,9 +1,10 @@
 package session
 
 import (
+	"fmt"
 	"context"
 	"time"
-	
+
 	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
 
 	cid "github.com/ipfs/go-cid"
@@ -320,12 +321,14 @@ func (sws *sessionWantSender) processAvailability(availability map[peer.ID]bool)
 		if isNowAvailable {
 			isNewPeer := sws.spm.AddPeer(p)
 			if isNewPeer {
+				fmt.Println("Adding peer: ", p, " to session")
 				stateChange = true
 				newlyAvailable = append(newlyAvailable, p)
 			}
 		} else {
 			wasAvailable := sws.spm.RemovePeer(p)
 			if wasAvailable {
+				fmt.Println("Removing peer: ", p, " from session")
 				stateChange = true
 				newlyUnavailable = append(newlyUnavailable, p)
 			}
@@ -413,8 +416,12 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			// keep track of current response duration of Want-Have response
 			if wi, ok := sws.wants[c]; ok {
-				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+
+				if(wi.wantHaveSendTime[upd.from] != 0){
+					responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
+					fmt.Println("Peer ", upd.from, " returned BPDontHave for ", c)
+					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPDontHave)
+				}
 			}
 
 			// Update the block presence for the peer
@@ -423,6 +430,7 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 			// Check if the DONT_HAVE is in response to a want-block
 			// (could also be in response to want-have)
 			if sws.swbt.haveSentWantBlockTo(upd.from, c) {
+				fmt.Println("In response to a WANT-BLOCK for: ", c, ", peer: ", upd.from)
 				// If we were waiting for a response from this peer, clear
 				// sentTo so that we can send the want to another peer
 				if sentTo, ok := sws.getWantSentTo(c); ok && sentTo == upd.from {
@@ -438,8 +446,12 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			// keep track of current response duration of Want-Have response
 			if wi, ok := sws.wants[c]; ok {
-				responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-				sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+				
+				if(wi.wantHaveSendTime[upd.from] != 0){
+					responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
+					fmt.Println("Peer ", upd.from, " returned BPHave for ", c)
+					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPHave)
+				}
 			}
 
 			// If we haven't already received a block for the want
@@ -598,6 +610,8 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		for _, c := range snd.wantHaves.Keys() {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantHaveSendTime[p] = time.Now().UnixMilli()
+
+				fmt.Println("Generating Want-Have request for c: ", c, "peer:", p)
 			}
 		}
 
@@ -605,6 +619,8 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		for _, c := range snd.wantBlocks.Keys() {
 			if wi, ok := sws.wants[c]; ok {
 				wi.wantBlockSendTime[p] = time.Now().UnixMilli()
+				
+				fmt.Println("Generating Want-Block request for c: ", c, ", peer: ", p)
 			}
 		}
 
@@ -614,6 +630,7 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 		// precedence over want-haves.
 		wblks := snd.wantBlocks.Keys()
 		whaves := snd.wantHaves.Keys()
+
 		sws.pm.SendWants(sws.ctx, p, wblks, whaves)
 
 		// Inform the session that we've sent the wants
@@ -686,10 +703,13 @@ func (sws *sessionWantSender) updateWantBlockPresence(c cid.Cid, p peer.ID) {
 	// block presence for the peer / cid combination
 	switch {
 	case sws.bpm.PeerHasBlock(p, c):
+		fmt.Println("Block Presence (BPHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPHave)
 	case sws.bpm.PeerDoesNotHaveBlock(p, c):
+		fmt.Println("Block Presence (BPDontHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPDontHave)
 	default:
+		fmt.Println("Block Presence (BPUnknown) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPUnknown)
 	}
 }

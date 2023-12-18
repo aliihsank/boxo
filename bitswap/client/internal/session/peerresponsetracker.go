@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"math/rand"
 
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -24,8 +25,20 @@ func newPeerResponseTracker() *peerResponseTracker {
 	}
 }
 
-func (prt *peerResponseTracker) receivedWantHaveResponse(from peer.ID, responseDuration int64) {
+func (prt *peerResponseTracker) receivedWantHaveResponse(from peer.ID, responseDuration int64, bp BlockPresence) {
 	prt.lastHaveResponseDuration[from] = responseDuration
+
+	var presence string
+	switch bp {
+	case 0:
+		presence = "BPDontHave"
+	case 1:
+		presence = "BPUnknown"
+	case 2:
+		presence = "BPHave"
+	}
+
+	fmt.Println("Received Want-Have response from: ", from, ", BP: ", presence, ", Duration: ", responseDuration)
 }
 
 // receivedBlockFrom is called when a block is received from a peer
@@ -39,6 +52,8 @@ func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID, responseDuration
 	prt.blockResponseCount[from]++
 
 	prt.avgBlockResponseDuration[from] = totalResponseDuration / prt.blockResponseCount[from]
+
+	fmt.Println("Received Block response from: ", from, ", Duration: ", responseDuration)
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
@@ -54,7 +69,6 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	var total float64 = 0
 	for _, p := range peers {
 		peerVal := prt.getPeerValue(p)
-		// fmt.Println("Peer: ", i, ", Value: ", peerVal)
 		total += peerVal
 	}
 	

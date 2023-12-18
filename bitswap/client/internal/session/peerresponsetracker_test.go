@@ -3,7 +3,6 @@ package session
 import (
  	"math"
 	"testing"
-	"fmt"
 
 	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -59,7 +58,7 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 	peers := testutil.GeneratePeers(2)
 	prt := newPeerResponseTracker()
 
-	prt.receivedWantHaveResponse(peers[0], 10)
+	prt.receivedWantHaveResponse(peers[0], 10, BPHave)
 	prt.receivedBlockFrom(peers[0], 10)
 
 	chooseFirst := 0
@@ -72,8 +71,6 @@ func TestPeerResponseTrackerProbabilityOneKnownOneUnknownPeer(t *testing.T) {
 			chooseSecond++
 		}
 	}
-
-	fmt.Println("chooseFirst: ", chooseFirst, ", chooseSecond: ", chooseSecond)
 
 	if chooseSecond == 0 {
 		t.Fatal("expected unknown peer to occasionally be chosen")
@@ -90,7 +87,7 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 
 	wantHaveResponseDurations := []int64{10, 60, 30}
 	for pi, duration := range wantHaveResponseDurations {
-		prt.receivedWantHaveResponse(peers[pi], duration)
+		prt.receivedWantHaveResponse(peers[pi], duration, BPHave)
 	}
 
 	avgBlockResponseDuration := []int64{10, 60, 30}
@@ -122,8 +119,6 @@ func TestPeerResponseTrackerProbabilityProportional(t *testing.T) {
 
 	for i, c := range choices {
 
-		fmt.Println("Peer: ", i, ", Amount: ", c)
-
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
 		}
@@ -142,7 +137,7 @@ func TestPeerResponseTrackerProbabilityProportional_For_Different_WantHaveRespon
 
 	lastWantHaveResponseDurations := []int64{10, 60, 30}
 	for pi, duration := range lastWantHaveResponseDurations {
-		prt.receivedWantHaveResponse(peers[pi], duration)
+		prt.receivedWantHaveResponse(peers[pi], duration, BPHave)
 	}
 
 	avgBlockResponseDuration := []int64{30, 60, 10}
@@ -173,8 +168,6 @@ func TestPeerResponseTrackerProbabilityProportional_For_Different_WantHaveRespon
 	peerValues := []float64{0.42857, 0.1428, 0.42857} // normalized values
 
 	for i, c := range choices {
-
-		// TODO: fmt.Println("Peer: ", i, ", Amount: ", c)
 
 		if c == 0 {
 			t.Fatal("expected each peer to be chosen at least once")
