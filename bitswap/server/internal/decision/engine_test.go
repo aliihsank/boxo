@@ -7,6 +7,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -138,7 +139,7 @@ func TestConsistentAccounting(t *testing.T) {
 		t.Fatal("Inconsistent book-keeping. Strategies don't agree")
 	}
 
-	// Ensure sender didn't record receving anything. And that the receiver
+	// Ensure sender didn't record receiving anything. And that the receiver
 	// didn't record sending anything
 	if receiver.Engine.numBytesSentTo(sender.Peer) != 0 || sender.Engine.numBytesReceivedFrom(receiver.Peer) != 0 {
 		t.Fatal("Bert didn't send bytes to Ernie")
@@ -1647,7 +1648,7 @@ func TestWantlistGrowsToLimit(t *testing.T) {
 	// Send in two messages to test reslicing.
 	m := message.New(false)
 	for j := limit; j != 0; j-- {
-		m.AddEntry(blocks.NewBlock([]byte(fmt.Sprint(j))).Cid(), 0, pb.Message_Wantlist_Block, true)
+		m.AddEntry(blocks.NewBlock([]byte(strconv.Itoa(j))).Cid(), 0, pb.Message_Wantlist_Block, true)
 	}
 	warsaw.Engine.MessageReceived(ctx, riga.Peer, m)
 

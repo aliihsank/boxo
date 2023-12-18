@@ -12,6 +12,7 @@ import (
 	"os"
 	gopath "path"
 	"sort"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -24,7 +25,6 @@ import (
 	ft "github.com/ipfs/boxo/ipld/unixfs"
 	importer "github.com/ipfs/boxo/ipld/unixfs/importer"
 	uio "github.com/ipfs/boxo/ipld/unixfs/io"
-	path "github.com/ipfs/boxo/path"
 	u "github.com/ipfs/boxo/util"
 
 	cid "github.com/ipfs/go-cid"
@@ -59,7 +59,7 @@ func fileNodeFromReader(t *testing.T, ds ipld.DAGService, r io.Reader) ipld.Node
 }
 
 func mkdirP(t *testing.T, root *Directory, pth string) *Directory {
-	dirs := path.SplitList(pth)
+	dirs := strings.Split(pth, "/")
 	cur := root
 	for _, d := range dirs {
 		n, err := cur.Mkdir(d)
@@ -145,7 +145,7 @@ func assertFileAtPath(ds ipld.DAGService, root *Directory, expn ipld.Node, pth s
 		return dag.ErrNotProtobuf
 	}
 
-	parts := path.SplitList(pth)
+	parts := strings.Split(pth, "/")
 	cur := root
 	for i, d := range parts[:len(parts)-1] {
 		next, err := cur.Child(d)
@@ -188,7 +188,7 @@ func assertFileAtPath(ds ipld.DAGService, root *Directory, expn ipld.Node, pth s
 	}
 
 	if !bytes.Equal(out, expbytes) {
-		return fmt.Errorf("incorrect data at path")
+		return errors.New("incorrect data at path")
 	}
 	return nil
 }
@@ -807,7 +807,7 @@ func actorWriteFile(d *Directory) error {
 		return err
 	}
 	if n != size {
-		return fmt.Errorf("didnt write enough")
+		return errors.New("didnt write enough")
 	}
 
 	return wfd.Close()
@@ -1048,7 +1048,7 @@ func readFile(rt *Root, path string, offset int64, buf []byte) error {
 		return err
 	}
 	if nread != len(buf) {
-		return fmt.Errorf("didn't read enough")
+		return errors.New("didn't read enough")
 	}
 
 	return fd.Close()
@@ -1109,7 +1109,7 @@ func writeFile(rt *Root, path string, transform func([]byte) []byte) error {
 
 	fi, ok := n.(*File)
 	if !ok {
-		return fmt.Errorf("expected to receive a file, but didnt get one")
+		return errors.New("expected to receive a file, but didnt get one")
 	}
 
 	fd, err := fi.Open(Flags{Read: true, Write: true, Sync: true})
@@ -1179,7 +1179,7 @@ func TestConcurrentWrites(t *testing.T) {
 						}
 						buf = make([]byte, 8)
 					} else if len(buf) != 8 {
-						errs <- fmt.Errorf("buf not the right size")
+						errs <- errors.New("buf not the right size")
 						return buf
 					}
 
