@@ -419,8 +419,8 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 				if(wi.wantHaveSendTime[upd.from] != 0){
 					responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-					fmt.Println("Peer ", upd.from, " returned BPDontHave for ", c)
-					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPDontHave)
+					fmt.Println("Received Want-Have response from: ", upd.from, ", BPDontHave", ", Duration: ", responseDuration)
+					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
 				}
 			}
 
@@ -449,8 +449,8 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 				
 				if(wi.wantHaveSendTime[upd.from] != 0){
 					responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-					fmt.Println("Peer ", upd.from, " returned BPHave for ", c)
-					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration, BPHave)
+					fmt.Println("Received Want-Have response from: ", upd.from, ", BPHave", ", Duration: ", responseDuration)
+					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
 				}
 			}
 
