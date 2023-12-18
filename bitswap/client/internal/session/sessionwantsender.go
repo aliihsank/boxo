@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"context"
 
 	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
@@ -319,12 +320,14 @@ func (sws *sessionWantSender) processAvailability(availability map[peer.ID]bool)
 		if isNowAvailable {
 			isNewPeer := sws.spm.AddPeer(p)
 			if isNewPeer {
+				fmt.Println("Adding peer: ", p, " to session")
 				stateChange = true
 				newlyAvailable = append(newlyAvailable, p)
 			}
 		} else {
 			wasAvailable := sws.spm.RemovePeer(p)
 			if wasAvailable {
+				fmt.Println("Removing peer: ", p, " from session")
 				stateChange = true
 				newlyUnavailable = append(newlyUnavailable, p)
 			}
@@ -409,6 +412,8 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			dontHaves.Add(c)
 
+			fmt.Println("Received Want-Have response from: ", upd.from, ", BPDontHave")
+
 			// Update the block presence for the peer
 			sws.updateWantBlockPresence(c, upd.from)
 
@@ -427,6 +432,9 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 	// Process received HAVEs
 	for _, upd := range updates {
 		for _, c := range upd.haves {
+
+			fmt.Println("Received Want-Have response from: ", upd.from, ", BPHave")
+
 			// If we haven't already received a block for the want
 			if !blkCids.Has(c) {
 				// Update the block presence for the peer
@@ -579,6 +587,15 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 			snd.wantHaves.Add(c)
 		}
 
+		for _, c := range snd.wantHaves.Keys() {
+			fmt.Println("Generating Want-Have request for c: ", c, "peer:", p)
+		}
+
+		// set send time for every want-block that is sent to peer p
+		for _, c := range snd.wantBlocks.Keys() {
+			fmt.Println("Generating Want-Block request for c: ", c, ", peer: ", p)
+		}
+
 		// Send the wants to the peer.
 		// Note that the PeerManager ensures that we don't sent duplicate
 		// want-haves / want-blocks to a peer, and that want-blocks take
@@ -657,10 +674,13 @@ func (sws *sessionWantSender) updateWantBlockPresence(c cid.Cid, p peer.ID) {
 	// block presence for the peer / cid combination
 	switch {
 	case sws.bpm.PeerHasBlock(p, c):
+		fmt.Println("Block Presence (BPHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPHave)
 	case sws.bpm.PeerDoesNotHaveBlock(p, c):
+		fmt.Println("Block Presence (BPDontHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPDontHave)
 	default:
+		fmt.Println("Block Presence (BPUnknown) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPUnknown)
 	}
 }

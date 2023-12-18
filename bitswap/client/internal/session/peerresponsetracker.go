@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"math/rand"
 
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -22,6 +23,8 @@ func newPeerResponseTracker() *peerResponseTracker {
 // (only called first time block is received)
 func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID) {
 	prt.firstResponder[from]++
+	
+	fmt.Println("Received Block response from: ", from)
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
