@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
-	"github.com/aliihsank/boxo/ipns"
-	"github.com/aliihsank/boxo/path"
+	opts "github.com/ipfs/boxo/coreiface/options/namesys"
+	"github.com/ipfs/boxo/ipns"
+	"github.com/ipfs/boxo/path"
 	logging "github.com/ipfs/go-log/v2"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
 	"github.com/libp2p/go-libp2p/core/peer"

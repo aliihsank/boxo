@@ -6,7 +6,7 @@ import (
 	"io"
 	"testing"
 
-	util "github.com/aliihsank/boxo/util"
+	util "github.com/ipfs/boxo/util"
 	blocks "github.com/ipfs/go-block-format"
 )
 

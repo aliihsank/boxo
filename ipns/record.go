@@ -8,9 +8,9 @@ import (
 	"sort"
 	"time"
 
-	ipns_pb "github.com/aliihsank/boxo/ipns/pb"
-	"github.com/aliihsank/boxo/path"
-	"github.com/aliihsank/boxo/util"
+	ipns_pb "github.com/ipfs/boxo/ipns/pb"
+	"github.com/ipfs/boxo/path"
+	"github.com/ipfs/boxo/util"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/codec/dagcbor"

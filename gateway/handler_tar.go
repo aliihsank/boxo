@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aliihsank/boxo/files"
+	"github.com/ipfs/boxo/files"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )

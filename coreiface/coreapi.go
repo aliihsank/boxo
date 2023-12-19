@@ -5,9 +5,9 @@ package iface
 import (
 	"context"
 
-	path "github.com/aliihsank/boxo/coreiface/path"
+	path "github.com/ipfs/boxo/coreiface/path"
 
-	"github.com/aliihsank/boxo/coreiface/options"
+	"github.com/ipfs/boxo/coreiface/options"
 
 	ipld "github.com/ipfs/go-ipld-format"
 )

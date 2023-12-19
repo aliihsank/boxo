@@ -77,7 +77,7 @@ func TestResponseBodyLimitedTransport(t *testing.T) {
 
 func TestUserAgentVersionString(t *testing.T) {
 	// forks will have to update below lines to pass test
-	assert.Equal(t, importPath(), "github.com/aliihsank/boxo")
+	assert.Equal(t, importPath(), "github.com/ipfs/boxo")
 	// @unknown because we run in tests
-	assert.Equal(t, moduleVersion(), "github.com/aliihsank/boxo@unknown")
+	assert.Equal(t, moduleVersion(), "github.com/ipfs/boxo@unknown")
 }

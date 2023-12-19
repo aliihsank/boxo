@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	dag "github.com/aliihsank/boxo/ipld/merkledag"
+	dag "github.com/ipfs/boxo/ipld/merkledag"
 	cid "github.com/ipfs/go-cid"
 	mh "github.com/multiformats/go-multihash"
 )

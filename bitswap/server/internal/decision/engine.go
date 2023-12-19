@@ -10,12 +10,12 @@ import (
 
 	"github.com/google/uuid"
 
-	wl "github.com/aliihsank/boxo/bitswap/client/wantlist"
-	"github.com/aliihsank/boxo/bitswap/internal/defaults"
-	bsmsg "github.com/aliihsank/boxo/bitswap/message"
-	pb "github.com/aliihsank/boxo/bitswap/message/pb"
-	bmetrics "github.com/aliihsank/boxo/bitswap/metrics"
-	bstore "github.com/aliihsank/boxo/blockstore"
+	wl "github.com/ipfs/boxo/bitswap/client/wantlist"
+	"github.com/ipfs/boxo/bitswap/internal/defaults"
+	bsmsg "github.com/ipfs/boxo/bitswap/message"
+	pb "github.com/ipfs/boxo/bitswap/message/pb"
+	bmetrics "github.com/ipfs/boxo/bitswap/metrics"
+	bstore "github.com/ipfs/boxo/blockstore"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
 	logging "github.com/ipfs/go-log/v2"

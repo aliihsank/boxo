@@ -3,7 +3,7 @@ package helpers
 import (
 	"context"
 
-	"github.com/aliihsank/boxo/fetcher"
+	"github.com/ipfs/boxo/fetcher"
 	"github.com/ipld/go-ipld-prime"
 	basicnode "github.com/ipld/go-ipld-prime/node/basic"
 	"github.com/ipld/go-ipld-prime/traversal/selector"

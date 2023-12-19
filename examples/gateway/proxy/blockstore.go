@@ -6,7 +6,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/aliihsank/boxo/exchange"
+	"github.com/ipfs/boxo/exchange"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"

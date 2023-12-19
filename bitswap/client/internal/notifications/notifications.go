@@ -6,7 +6,7 @@ import (
 	"time"
 
 	pubsub "github.com/cskr/pubsub"
-	"github.com/aliihsank/boxo/bitswap/client/traceability"
+	"github.com/ipfs/boxo/bitswap/client/traceability"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 	"github.com/libp2p/go-libp2p/core/peer"

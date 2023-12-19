@@ -4,8 +4,8 @@ import (
 	"crypto/rand"
 	"fmt"
 
-	"github.com/aliihsank/boxo/bitswap/client/wantlist"
-	bsmsg "github.com/aliihsank/boxo/bitswap/message"
+	"github.com/ipfs/boxo/bitswap/client/wantlist"
+	bsmsg "github.com/ipfs/boxo/bitswap/message"
 	blocks "github.com/ipfs/go-block-format"
 	cid "github.com/ipfs/go-cid"
 	blocksutil "github.com/ipfs/go-ipfs-blocksutil"

@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	path "github.com/aliihsank/boxo/coreiface/path"
-	"github.com/aliihsank/boxo/ipns"
+	path "github.com/ipfs/boxo/coreiface/path"
+	"github.com/ipfs/boxo/ipns"
 
-	"github.com/aliihsank/boxo/coreiface/options"
+	"github.com/ipfs/boxo/coreiface/options"
 )
 
 var ErrResolveFailed = errors.New("could not resolve name")

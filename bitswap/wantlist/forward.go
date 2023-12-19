@@ -1,7 +1,7 @@
 package wantlist
 
 import (
-	"github.com/aliihsank/boxo/bitswap/client/wantlist"
+	"github.com/ipfs/boxo/bitswap/client/wantlist"
 	"github.com/ipfs/go-cid"
 )
 

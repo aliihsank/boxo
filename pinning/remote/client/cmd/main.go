@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	pinclient "github.com/aliihsank/boxo/pinning/remote/client"
+	pinclient "github.com/ipfs/boxo/pinning/remote/client"
 	"github.com/ipfs/go-cid"
 )
 

@@ -3,7 +3,7 @@ package iface
 import (
 	"context"
 
-	"github.com/aliihsank/boxo/coreiface/options"
+	"github.com/ipfs/boxo/coreiface/options"
 )
 
 // RoutingAPI specifies the interface to the routing layer.

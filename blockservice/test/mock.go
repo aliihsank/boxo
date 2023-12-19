@@ -1,10 +1,10 @@
 package bstest
 
 import (
-	testinstance "github.com/aliihsank/boxo/bitswap/testinstance"
-	tn "github.com/aliihsank/boxo/bitswap/testnet"
-	"github.com/aliihsank/boxo/blockservice"
-	mockrouting "github.com/aliihsank/boxo/routing/mock"
+	testinstance "github.com/ipfs/boxo/bitswap/testinstance"
+	tn "github.com/ipfs/boxo/bitswap/testnet"
+	"github.com/ipfs/boxo/blockservice"
+	mockrouting "github.com/ipfs/boxo/routing/mock"
 	delay "github.com/ipfs/go-ipfs-delay"
 )
 

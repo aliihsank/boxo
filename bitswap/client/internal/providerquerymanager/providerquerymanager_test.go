@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aliihsank/boxo/bitswap/internal/testutil"
+	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	cid "github.com/ipfs/go-cid"
 	"github.com/libp2p/go-libp2p/core/peer"
 )

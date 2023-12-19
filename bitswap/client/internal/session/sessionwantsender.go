@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"context"
 
-	bsbpm "github.com/aliihsank/boxo/bitswap/client/internal/blockpresencemanager"
+	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
 
 	cid "github.com/ipfs/go-cid"
 	peer "github.com/libp2p/go-libp2p/core/peer"

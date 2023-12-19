@@ -5,5 +5,5 @@ Routing V1 Server and Client
 
 ## Documentation
 
-- Go Documentation: https://pkg.go.dev/github.com/aliihsank/boxo/routing/http
+- Go Documentation: https://pkg.go.dev/github.com/ipfs/boxo/routing/http
 - Routing V1 Specification: https://specs.ipfs.tech/routing/http-routing-v1/

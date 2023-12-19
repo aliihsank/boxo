@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/aliihsank/boxo/coreiface/path"
-	"github.com/aliihsank/boxo/files"
-	"github.com/aliihsank/boxo/gateway/assets"
-	"github.com/aliihsank/boxo/ipld/unixfs"
+	"github.com/ipfs/boxo/coreiface/path"
+	"github.com/ipfs/boxo/files"
+	"github.com/ipfs/boxo/gateway/assets"
+	"github.com/ipfs/boxo/ipld/unixfs"
 	"github.com/ipfs/go-cid"
 )
 

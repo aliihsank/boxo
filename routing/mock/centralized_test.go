@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	u "github.com/aliihsank/boxo/util"
+	u "github.com/ipfs/boxo/util"
 	"github.com/ipfs/go-cid"
 	delay "github.com/ipfs/go-ipfs-delay"
 	tnet "github.com/libp2p/go-libp2p-testing/net"

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	coreiface "github.com/aliihsank/boxo/coreiface"
+	coreiface "github.com/ipfs/boxo/coreiface"
 )
 
 var errAPINotImplemented = errors.New("api not implemented")

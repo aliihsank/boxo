@@ -53,8 +53,8 @@ package balanced
 import (
 	"errors"
 
-	ft "github.com/aliihsank/boxo/ipld/unixfs"
-	h "github.com/aliihsank/boxo/ipld/unixfs/importer/helpers"
+	ft "github.com/ipfs/boxo/ipld/unixfs"
+	h "github.com/ipfs/boxo/ipld/unixfs/importer/helpers"
 
 	ipld "github.com/ipfs/go-ipld-format"
 )

@@ -3,7 +3,7 @@ package json
 import (
 	"encoding/json"
 
-	"github.com/aliihsank/boxo/routing/http/types"
+	"github.com/ipfs/boxo/routing/http/types"
 )
 
 // Deprecated: protocol-agnostic provide is being worked on in [IPIP-378]:

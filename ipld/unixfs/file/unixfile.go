@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 
-	ft "github.com/aliihsank/boxo/ipld/unixfs"
-	uio "github.com/aliihsank/boxo/ipld/unixfs/io"
+	ft "github.com/ipfs/boxo/ipld/unixfs"
+	uio "github.com/ipfs/boxo/ipld/unixfs/io"
 
-	"github.com/aliihsank/boxo/files"
-	dag "github.com/aliihsank/boxo/ipld/merkledag"
+	"github.com/ipfs/boxo/files"
+	dag "github.com/ipfs/boxo/ipld/merkledag"
 	ipld "github.com/ipfs/go-ipld-format"
 )
 

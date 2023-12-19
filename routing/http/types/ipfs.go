@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/aliihsank/boxo/routing/http/internal/drjson"
+	"github.com/ipfs/boxo/routing/http/internal/drjson"
 	"github.com/ipfs/go-cid"
 	"github.com/multiformats/go-multiaddr"
 )

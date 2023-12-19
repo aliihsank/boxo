@@ -12,15 +12,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aliihsank/boxo/bitswap/internal/testutil"
+	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	blocks "github.com/ipfs/go-block-format"
 	protocol "github.com/libp2p/go-libp2p/core/protocol"
 
-	"github.com/aliihsank/boxo/bitswap"
-	bsnet "github.com/aliihsank/boxo/bitswap/network"
-	testinstance "github.com/aliihsank/boxo/bitswap/testinstance"
-	tn "github.com/aliihsank/boxo/bitswap/testnet"
-	mockrouting "github.com/aliihsank/boxo/routing/mock"
+	"github.com/ipfs/boxo/bitswap"
+	bsnet "github.com/ipfs/boxo/bitswap/network"
+	testinstance "github.com/ipfs/boxo/bitswap/testinstance"
+	tn "github.com/ipfs/boxo/bitswap/testnet"
+	mockrouting "github.com/ipfs/boxo/routing/mock"
 	cid "github.com/ipfs/go-cid"
 	delay "github.com/ipfs/go-ipfs-delay"
 )

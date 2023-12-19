@@ -8,24 +8,24 @@ import (
 	"sync"
 	"time"
 
-	bsbpm "github.com/aliihsank/boxo/bitswap/client/internal/blockpresencemanager"
-	bsgetter "github.com/aliihsank/boxo/bitswap/client/internal/getter"
-	bsmq "github.com/aliihsank/boxo/bitswap/client/internal/messagequeue"
-	"github.com/aliihsank/boxo/bitswap/client/internal/notifications"
-	bspm "github.com/aliihsank/boxo/bitswap/client/internal/peermanager"
-	bspqm "github.com/aliihsank/boxo/bitswap/client/internal/providerquerymanager"
-	bssession "github.com/aliihsank/boxo/bitswap/client/internal/session"
-	bssim "github.com/aliihsank/boxo/bitswap/client/internal/sessioninterestmanager"
-	bssm "github.com/aliihsank/boxo/bitswap/client/internal/sessionmanager"
-	bsspm "github.com/aliihsank/boxo/bitswap/client/internal/sessionpeermanager"
-	"github.com/aliihsank/boxo/bitswap/internal"
-	"github.com/aliihsank/boxo/bitswap/internal/defaults"
-	bsmsg "github.com/aliihsank/boxo/bitswap/message"
-	bmetrics "github.com/aliihsank/boxo/bitswap/metrics"
-	bsnet "github.com/aliihsank/boxo/bitswap/network"
-	"github.com/aliihsank/boxo/bitswap/tracer"
-	blockstore "github.com/aliihsank/boxo/blockstore"
-	exchange "github.com/aliihsank/boxo/exchange"
+	bsbpm "github.com/ipfs/boxo/bitswap/client/internal/blockpresencemanager"
+	bsgetter "github.com/ipfs/boxo/bitswap/client/internal/getter"
+	bsmq "github.com/ipfs/boxo/bitswap/client/internal/messagequeue"
+	"github.com/ipfs/boxo/bitswap/client/internal/notifications"
+	bspm "github.com/ipfs/boxo/bitswap/client/internal/peermanager"
+	bspqm "github.com/ipfs/boxo/bitswap/client/internal/providerquerymanager"
+	bssession "github.com/ipfs/boxo/bitswap/client/internal/session"
+	bssim "github.com/ipfs/boxo/bitswap/client/internal/sessioninterestmanager"
+	bssm "github.com/ipfs/boxo/bitswap/client/internal/sessionmanager"
+	bsspm "github.com/ipfs/boxo/bitswap/client/internal/sessionpeermanager"
+	"github.com/ipfs/boxo/bitswap/internal"
+	"github.com/ipfs/boxo/bitswap/internal/defaults"
+	bsmsg "github.com/ipfs/boxo/bitswap/message"
+	bmetrics "github.com/ipfs/boxo/bitswap/metrics"
+	bsnet "github.com/ipfs/boxo/bitswap/network"
+	"github.com/ipfs/boxo/bitswap/tracer"
+	blockstore "github.com/ipfs/boxo/blockstore"
+	exchange "github.com/ipfs/boxo/exchange"
 	blocks "github.com/ipfs/go-block-format"
 	"github.com/ipfs/go-cid"
 	delay "github.com/ipfs/go-ipfs-delay"
@@ -238,7 +238,7 @@ type counters struct {
 
 // GetBlock attempts to retrieve a particular block from peers within the
 // deadline enforced by the context.
-// It returns a [github.com/aliihsank/boxo/bitswap/client/traceability.Block] assertable [blocks.Block].
+// It returns a [github.com/ipfs/boxo/bitswap/client/traceability.Block] assertable [blocks.Block].
 func (bs *Client) GetBlock(ctx context.Context, k cid.Cid) (blocks.Block, error) {
 	ctx, span := internal.StartSpan(ctx, "GetBlock", trace.WithAttributes(attribute.String("Key", k.String())))
 	defer span.End()
@@ -248,7 +248,7 @@ func (bs *Client) GetBlock(ctx context.Context, k cid.Cid) (blocks.Block, error)
 // GetBlocks returns a channel where the caller may receive blocks that
 // correspond to the provided |keys|. Returns an error if BitSwap is unable to
 // begin this request within the deadline enforced by the context.
-// It returns a [github.com/aliihsank/boxo/bitswap/client/traceability.Block] assertable [blocks.Block].
+// It returns a [github.com/ipfs/boxo/bitswap/client/traceability.Block] assertable [blocks.Block].
 //
 // NB: Your request remains open until the context expires. To conserve
 // resources, provide a context with a reasonably short deadline (ie. not one

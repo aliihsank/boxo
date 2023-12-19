@@ -3,7 +3,7 @@ package path
 import (
 	"strings"
 
-	ipfspath "github.com/aliihsank/boxo/path"
+	ipfspath "github.com/ipfs/boxo/path"
 	cid "github.com/ipfs/go-cid"
 )
 

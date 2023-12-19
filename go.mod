@@ -1,4 +1,4 @@
-module github.com/aliihsank/boxo
+module github.com/ipfs/boxo
 
 go 1.20
 
@@ -169,4 +169,4 @@ require (
 	lukechampine.com/blake3 v1.2.1 // indirect
 )
 
-replace github.com/ipfs/boxo => github.com/aliihsank/boxo v0.0.0-20231029104840-083a477b6210
+replace github.com/ipfs/boxo => github.com/ipfs/boxo v0.0.0-20231029104840-083a477b6210

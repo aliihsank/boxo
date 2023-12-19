@@ -33,8 +33,8 @@ import (
 	"context"
 	"errors"
 
-	opts "github.com/aliihsank/boxo/coreiface/options/namesys"
-	"github.com/aliihsank/boxo/path"
+	opts "github.com/ipfs/boxo/coreiface/options/namesys"
+	"github.com/ipfs/boxo/path"
 	ci "github.com/libp2p/go-libp2p/core/crypto"
 )
 

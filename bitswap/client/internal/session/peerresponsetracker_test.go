@@ -5,7 +5,7 @@ import (
 	"testing"
 	"fmt"
 
-	"github.com/aliihsank/boxo/bitswap/internal/testutil"
+	"github.com/ipfs/boxo/bitswap/internal/testutil"
 	peer "github.com/libp2p/go-libp2p/core/peer"
 )
 

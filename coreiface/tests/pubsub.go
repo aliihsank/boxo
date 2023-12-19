@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	iface "github.com/aliihsank/boxo/coreiface"
-	"github.com/aliihsank/boxo/coreiface/options"
+	iface "github.com/ipfs/boxo/coreiface"
+	"github.com/ipfs/boxo/coreiface/options"
 )
 
 func (tp *TestSuite) TestPubSub(t *testing.T) {

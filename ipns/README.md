@@ -4,7 +4,7 @@
 
 ## Documentation
 
-- Go Documentation: https://pkg.go.dev/github.com/aliihsank/boxo/ipns
+- Go Documentation: https://pkg.go.dev/github.com/ipfs/boxo/ipns
 - IPNS Record Specification: https://specs.ipfs.tech/ipns/ipns-record/
 
 ## Example
@@ -16,8 +16,8 @@ import (
 	"crypto/rand"
 	"time"
 
-	"github.com/aliihsank/boxo/ipns"
-	"github.com/aliihsank/boxo/path"
+	"github.com/ipfs/boxo/ipns"
+	"github.com/ipfs/boxo/path"
 	ic "github.com/libp2p/go-libp2p/core/crypto"
 )
 

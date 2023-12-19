@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aliihsank/boxo/gateway/assets"
-	"github.com/aliihsank/boxo/path/resolver"
+	"github.com/ipfs/boxo/gateway/assets"
+	"github.com/ipfs/boxo/path/resolver"
 	"github.com/ipfs/go-cid"
 	"github.com/ipld/go-ipld-prime/datamodel"
 )
