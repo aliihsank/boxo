@@ -19,7 +19,7 @@ func newPeerResponseTracker() *peerResponseTracker {
 	return &peerResponseTracker{
 		firstResponder: make(map[peer.ID]int),
 		respondQueue: list.New(),
-		respondCountTreshold: 1000,
+		respondCountTreshold: 20,
 	}
 }
 
