@@ -2,12 +2,11 @@ package mfs
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	gopath "path"
 	"strings"
-
-	path "github.com/ipfs/boxo/path"
 
 	cid "github.com/ipfs/go-cid"
 	ipld "github.com/ipfs/go-ipld-format"
@@ -107,7 +106,7 @@ func lookupDir(r *Root, path string) (*Directory, error) {
 func PutNode(r *Root, path string, nd ipld.Node) error {
 	dirp, filename := gopath.Split(path)
 	if filename == "" {
-		return fmt.Errorf("cannot create file with empty name")
+		return errors.New("cannot create file with empty name")
 	}
 
 	pdir, err := lookupDir(r, dirp)
@@ -129,9 +128,9 @@ type MkdirOpts struct {
 // intermediary directories as needed if 'mkparents' is set to true
 func Mkdir(r *Root, pth string, opts MkdirOpts) error {
 	if pth == "" {
-		return fmt.Errorf("no path given to Mkdir")
+		return errors.New("no path given to Mkdir")
 	}
-	parts := path.SplitList(pth)
+	parts := strings.Split(pth, "/")
 	if parts[0] == "" {
 		parts = parts[1:]
 	}
@@ -146,7 +145,7 @@ func Mkdir(r *Root, pth string, opts MkdirOpts) error {
 		if opts.Mkparents {
 			return nil
 		}
-		return fmt.Errorf("cannot create directory '/': Already exists")
+		return errors.New("cannot create directory '/': Already exists")
 	}
 
 	cur := r.GetDirectory()
@@ -167,7 +166,7 @@ func Mkdir(r *Root, pth string, opts MkdirOpts) error {
 
 		next, ok := fsn.(*Directory)
 		if !ok {
-			return fmt.Errorf("%s was not a directory", path.Join(parts[:i]))
+			return fmt.Errorf("%s was not a directory", strings.Join(parts[:i], "/"))
 		}
 		cur = next
 	}
@@ -205,7 +204,7 @@ func Lookup(r *Root, path string) (FSNode, error) {
 // under the directory 'd'
 func DirLookup(d *Directory, pth string) (FSNode, error) {
 	pth = strings.Trim(pth, "/")
-	parts := path.SplitList(pth)
+	parts := strings.Split(pth, "/")
 	if len(parts) == 1 && parts[0] == "" {
 		return d, nil
 	}
@@ -215,7 +214,7 @@ func DirLookup(d *Directory, pth string) (FSNode, error) {
 	for i, p := range parts {
 		chdir, ok := cur.(*Directory)
 		if !ok {
-			return nil, fmt.Errorf("cannot access %s: Not a directory", path.Join(parts[:i+1]))
+			return nil, fmt.Errorf("cannot access %s: Not a directory", strings.Join(parts[:i+1], "/"))
 		}
 
 		child, err := chdir.Child(p)
