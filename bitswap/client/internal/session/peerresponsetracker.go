@@ -2,7 +2,6 @@ package session
 
 import (
 	"fmt"
-	"fmt"
 	"math/rand"
 	"container/list"
 	peer "github.com/libp2p/go-libp2p/core/peer"
