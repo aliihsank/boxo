@@ -1,6 +1,7 @@
 package session
 
 import (
+	"fmt"
 	"math/rand"
 	"container/list"
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -36,6 +37,8 @@ func (prt *peerResponseTracker) receivedBlockFrom(from peer.ID) {
 
 		prt.respondQueue.Remove(front)
 	}
+	
+	fmt.Println("Received Block response from: ", from)
 }
 
 // choose picks a peer from the list of candidate peers, favouring those peers
