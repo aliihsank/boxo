@@ -324,6 +324,7 @@ func (bs *Server) logOutgoingBlocks(env *decision.Envelope) {
 		c := blockPresence.Cid
 		switch blockPresence.Type {
 		case pb.Message_Have:
+			fmt.Println("Sent HAVE for block: ", c, " from: ", self, " to: ", env.Peer)
 			log.Debugw("sent message",
 				"type", "HAVE",
 				"cid", c,
@@ -331,6 +332,7 @@ func (bs *Server) logOutgoingBlocks(env *decision.Envelope) {
 				"to", env.Peer,
 			)
 		case pb.Message_DontHave:
+			fmt.Println("Sent DONT_HAVE for block: ", c, " from: ", self, " to: ", env.Peer)
 			log.Debugw("sent message",
 				"type", "DONT_HAVE",
 				"cid", c,
@@ -343,6 +345,7 @@ func (bs *Server) logOutgoingBlocks(env *decision.Envelope) {
 
 	}
 	for _, block := range env.Message.Blocks() {
+		fmt.Println("Block sent: ", block.Cid(), " from: ", self, " to peer: ", env.Peer, ", *****************************************************")
 		log.Debugw("sent message",
 			"type", "BLOCK",
 			"cid", block.Cid(),
@@ -372,7 +375,6 @@ func (bs *Server) sendBlocks(ctx context.Context, env *decision.Envelope) {
 	blocks := env.Message.Blocks()
 	for _, b := range blocks {
 		dataSent += len(b.RawData())
-		fmt.Println("Block sent: ", b.Cid(), ", *****************************************************")
 	}
 	bs.counterLk.Lock()
 	bs.counters.BlocksSent += uint64(len(blocks))
