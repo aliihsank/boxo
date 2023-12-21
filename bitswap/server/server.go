@@ -372,6 +372,7 @@ func (bs *Server) sendBlocks(ctx context.Context, env *decision.Envelope) {
 	blocks := env.Message.Blocks()
 	for _, b := range blocks {
 		dataSent += len(b.RawData())
+		fmt.Println("Block sent: ", b.Cid(), ", *****************************************************")
 	}
 	bs.counterLk.Lock()
 	bs.counters.BlocksSent += uint64(len(blocks))
