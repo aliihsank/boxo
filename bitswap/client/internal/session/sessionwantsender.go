@@ -588,10 +588,6 @@ func (sws *sessionWantSender) sendWants(sends allWants) {
 			snd.wantHaves.Add(c)
 		}
 
-		for _, c := range snd.wantHaves.Keys() {
-			fmt.Println("Generating Want-Have request for c: ", c, "peer:", p)
-		}
-
 		// set send time for every want-block that is sent to peer p
 		for _, c := range snd.wantBlocks.Keys() {
 			fmt.Println("Generating Want-Block request for c: ", c, ", peer: ", p)
@@ -675,13 +671,10 @@ func (sws *sessionWantSender) updateWantBlockPresence(c cid.Cid, p peer.ID) {
 	// block presence for the peer / cid combination
 	switch {
 	case sws.bpm.PeerHasBlock(p, c):
-		fmt.Println("Block Presence (BPHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPHave)
 	case sws.bpm.PeerDoesNotHaveBlock(p, c):
-		fmt.Println("Block Presence (BPDontHave) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPDontHave)
 	default:
-		fmt.Println("Block Presence (BPUnknown) for c: ", c, ", peer: ", p)
 		wi.setPeerBlockPresence(p, BPUnknown)
 	}
 }
