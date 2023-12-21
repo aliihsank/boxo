@@ -756,6 +756,9 @@ func (wi *wantInfo) removePeer(p peer.ID) {
 
 // calculateBestPeer finds the best peer to send the want to next
 func (wi *wantInfo) calculateBestPeer() {
+
+	fmt.Println("Started CalculateBestPeer.")
+
 	// Recalculate the best peer
 	bestBP := BPDontHave
 	bestPeer := peer.ID("")
@@ -764,6 +767,7 @@ func (wi *wantInfo) calculateBestPeer() {
 	// share the block presence
 	countWithBest := 0
 	for p, bp := range wi.blockPresence {
+		fmt.Println("Block Presence: ", bp, " for peer: ", p)
 		if bp > bestBP {
 			bestBP = bp
 			bestPeer = p
@@ -781,6 +785,7 @@ func (wi *wantInfo) calculateBestPeer() {
 
 	// If there was only one peer with the best block presence, we're done
 	if countWithBest <= 1 {
+		fmt.Println("Best peer: ", wi.bestPeer, " selected early")
 		return
 	}
 
