@@ -358,6 +358,7 @@ func (sws *sessionWantSender) trackWant(c cid.Cid) {
 	// For each available peer, register any information we know about
 	// whether the peer has the block
 	for _, p := range sws.spm.Peers() {
+		fmt.Println("Updating BlockPresence's for New WantInfo")
 		sws.updateWantBlockPresence(c, p)
 	}
 }
@@ -665,6 +666,7 @@ func (sws *sessionWantSender) removeWant(c cid.Cid) *wantInfo {
 func (sws *sessionWantSender) updateWantsPeerAvailability(p peer.ID, isNowAvailable bool) {
 	for c, wi := range sws.wants {
 		if isNowAvailable {
+			fmt.Println("Updating BlockPresence's for isNowAvailable")
 			sws.updateWantBlockPresence(c, p)
 		} else {
 			wi.removePeer(p)
@@ -684,10 +686,13 @@ func (sws *sessionWantSender) updateWantBlockPresence(c cid.Cid, p peer.ID) {
 	// block presence for the peer / cid combination
 	switch {
 	case sws.bpm.PeerHasBlock(p, c):
+		fmt.Println("Peer: ", p, ", BPHave")
 		wi.setPeerBlockPresence(p, BPHave)
 	case sws.bpm.PeerDoesNotHaveBlock(p, c):
+		fmt.Println("Peer: ", p, ", BPDontHave")
 		wi.setPeerBlockPresence(p, BPDontHave)
 	default:
+		fmt.Println("Peer: ", p, ", BPUnknown")
 		wi.setPeerBlockPresence(p, BPUnknown)
 	}
 }
