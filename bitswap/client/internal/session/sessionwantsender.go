@@ -546,7 +546,7 @@ func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 
 	for c, wi := range sws.wants {
 		
-		fmt.Println("SendNextWants c:", c, ", Wi: ", wi)
+		fmt.Println("SendNextWants c:", c, ", wi.bestPeer: ", wi.bestPeer, ", wi.sentTo: ", wi.sentTo)
 
 		// Ensure we send want-haves to any newly available peers
 		for _, p := range newlyAvailable {
