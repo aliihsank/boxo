@@ -45,9 +45,15 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	// Choose one of the peers with a chance proportional to the number
 	// of blocks received from that peer
 	counted := 0.0
+	fmt.Println("Choosing best peer...")
 	for _, p := range peers {
-		counted += float64(prt.getPeerCount(p)) / float64(total)
+		peerProbability := float64(prt.getPeerCount(p)) / float64(total)
+
+		fmt.Println("Peer: ", p, ", Peer Probability: ", peerProbability, ", Cumulative: ", counted + peerProbability, ", Threshold: ", rnd)
+
+		counted += peerProbability
 		if counted > rnd {
+			fmt.Println("Chose Peer: ", p, " as best peer.")
 			return p
 		}
 	}
