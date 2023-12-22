@@ -543,12 +543,7 @@ func (aw allWants) forPeer(p peer.ID) *wantSets {
 func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 	toSend := make(allWants)
 
-	fmt.Println("Sending next wants.")
-
 	for c, wi := range sws.wants {
-		
-		fmt.Println("SendNextWants c:", c, ", wi.bestPeer: ", wi.bestPeer, ", wi.sentTo: ", wi.sentTo)
-
 		// Ensure we send want-haves to any newly available peers
 		for _, p := range newlyAvailable {
 			fmt.Println("Newly Available p:", p, ", c: ", c)
@@ -582,16 +577,12 @@ func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 		}
 	}
 
-	fmt.Println("Will Send Wants.")
-
 	// Send any wants we've collected
 	sws.sendWants(toSend)
 }
 
 // sendWants sends want-have and want-blocks to the appropriate peers
 func (sws *sessionWantSender) sendWants(sends allWants) {
-
-	fmt.Println("Starting sendWants.")
 
 	// For each peer we're sending a request to
 	for p, snd := range sends {
