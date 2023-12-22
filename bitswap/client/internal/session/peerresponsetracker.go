@@ -96,7 +96,11 @@ func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 
 	fmt.Println("(GetValue) Peer: ", p, ", lastWantHaveResponseTime: ", lastWantHaveResponseTime, ", wantBlockResponseDownloadAvg: ", wantBlockResponseDownloadAvg)
 	
-	peerValue := 1 / ((a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg) * (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg))
+	baseInversePeerValue := (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg)
+
+	inversePeerValue := baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue
+
+	peerValue := 1 / inversePeerValue
 
 	return peerValue
 }
