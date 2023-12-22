@@ -89,8 +89,8 @@ func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 	// will be chosen
 
 	// TODO: a + b = 1, a > b
-	a := 0.5
-	b := 0.5
+	a := 0.3
+	b := 0.7
 
 	lastWantHaveResponseTime := prt.lastWantHaveResponseTime(p)
 	wantBlockResponseDownloadAvg := prt.wantBlockResponseDownloadAvg(p)
@@ -110,7 +110,7 @@ func (prt *peerResponseTracker) lastWantHaveResponseTime(p peer.ID) float64 {
 	duration := float64(prt.lastHaveResponseDuration[p]) 
 	
 	if duration == 0 {
-		duration = 1500 // TODO: Set this value appropriately, we may set it to zero 
+		duration = 1000 // TODO: Set this value appropriately, we may set it to zero 
 	}
 
 	return duration
@@ -121,7 +121,7 @@ func (prt *peerResponseTracker) wantBlockResponseDownloadAvg(p peer.ID) float64 
 	
 	// TODO: Bu değer silinecek
 	if duration == 0 {
-		duration = 1500 // TODO: Set this value appropriately
+		duration = 1000 // TODO: Set this value appropriately
 	}
 
 	return duration
