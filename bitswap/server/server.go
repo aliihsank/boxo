@@ -368,6 +368,24 @@ func (bs *Server) sendBlocks(ctx context.Context, env *decision.Envelope) {
 
 	bs.logOutgoingBlocks(env)
 
+	self := bs.network.Self()
+
+	for _, blockPresence := range env.Message.BlockPresences() {
+		c := blockPresence.Cid
+		switch blockPresence.Type {
+		case pb.Message_Have:
+			fmt.Println("Sent HAVE for block: ", c, " from: ", self, " to: ", env.Peer)
+		case pb.Message_DontHave:
+			fmt.Println("Sent DONT_HAVE for block: ", c, " from: ", self, " to: ", env.Peer)
+		default:
+			panic(fmt.Sprintf("unrecognized BlockPresence type %v", blockPresence.Type))
+		}
+
+	}
+	for _, block := range env.Message.Blocks() {
+		fmt.Println("Block sent: ", block.Cid(), " from: ", self, " to peer: ", env.Peer, ", *****************************************************")
+	}
+
 	dataSent := 0
 	blocks := env.Message.Blocks()
 	for _, b := range blocks {

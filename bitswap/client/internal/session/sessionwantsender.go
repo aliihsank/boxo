@@ -560,9 +560,15 @@ func (aw allWants) forPeer(p peer.ID) *wantSets {
 func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 	toSend := make(allWants)
 
+	fmt.Println("Sending next wants.")
+
 	for c, wi := range sws.wants {
+		
+		fmt.Println("SendNextWants c:", c, ", wi.bestPeer: ", wi.bestPeer, ", wi.sentTo: ", wi.sentTo)
+
 		// Ensure we send want-haves to any newly available peers
 		for _, p := range newlyAvailable {
+			fmt.Println("Newly Available p:", p, ", c: ", c)
 			toSend.forPeer(p).wantHaves.Add(c)
 		}
 
@@ -592,6 +598,8 @@ func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 			}
 		}
 	}
+	
+	fmt.Println("Will Send Wants.")
 
 	// Send any wants we've collected
 	sws.sendWants(toSend)
@@ -599,6 +607,9 @@ func (sws *sessionWantSender) sendNextWants(newlyAvailable []peer.ID) {
 
 // sendWants sends want-have and want-blocks to the appropriate peers
 func (sws *sessionWantSender) sendWants(sends allWants) {
+	
+	fmt.Println("Starting sendWants.")
+	
 	// For each peer we're sending a request to
 	for p, snd := range sends {
 		// Piggyback some other want-haves onto the request to the peer
@@ -784,6 +795,9 @@ func (wi *wantInfo) removePeer(p peer.ID) {
 
 // calculateBestPeer finds the best peer to send the want to next
 func (wi *wantInfo) calculateBestPeer() {
+
+	fmt.Println("Started CalculateBestPeer.")
+
 	// Recalculate the best peer
 	bestBP := BPDontHave
 	bestPeer := peer.ID("")
@@ -792,6 +806,7 @@ func (wi *wantInfo) calculateBestPeer() {
 	// share the block presence
 	countWithBest := 0
 	for p, bp := range wi.blockPresence {
+		fmt.Println("Block Presence: ", bp, " for peer: ", p)
 		if bp > bestBP {
 			bestBP = bp
 			bestPeer = p
@@ -809,6 +824,7 @@ func (wi *wantInfo) calculateBestPeer() {
 
 	// If there was only one peer with the best block presence, we're done
 	if countWithBest <= 1 {
+		fmt.Println("Best peer: ", wi.bestPeer, " selected early")
 		return
 	}
 
