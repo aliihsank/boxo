@@ -65,9 +65,10 @@ func (prt *peerResponseTracker) choose(peers []peer.ID) peer.ID {
 	counted := 0.0
 	fmt.Println("Choosing best peer...")
 	for _, p := range peers {
-		peerProbability := float64(prt.getPeerValue(p)) / float64(total)
+		peerVal := prt.getPeerValue(p)
+		peerProbability := float64(peerVal) / float64(total)
 		
-		fmt.Println("Peer: ", p, ", Peer Probability: ", peerProbability, ", Cumulative: ", counted + peerProbability, ", Threshold: ", rnd)
+		fmt.Println("Peer: ", p, ", Peer Val: ", peerVal, ", Total: ", total, ", Peer Probability: ", peerProbability, ", Cumulative: ", counted + peerProbability, ", Threshold: ", rnd)
 		counted += peerProbability
 		if counted > rnd {
 			fmt.Println("Chose Peer: ", p, " as best peer.")
@@ -90,7 +91,12 @@ func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 	a := 0.5
 	b := 0.5
 
-	peerValue := 1 / (a * prt.lastWantHaveResponseTime(p) + b * prt.wantBlockResponseDownloadAvg(p))
+	lastWantHaveResponseTime := prt.lastWantHaveResponseTime(p)
+	wantBlockResponseDownloadAvg := prt.wantBlockResponseDownloadAvg(p)
+
+	fmt.Println("(GetValue) Peer: ", p, ", lastWantHaveResponseTime: ", lastWantHaveResponseTime, ", wantBlockResponseDownloadAvg: ", wantBlockResponseDownloadAvg)
+
+	peerValue := 1 / (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg)
 
 	return peerValue
 }
