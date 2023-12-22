@@ -2,6 +2,7 @@ package session
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 
 	peer "github.com/libp2p/go-libp2p/core/peer"
@@ -88,15 +89,15 @@ func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 	// will be chosen
 
 	// TODO: a + b = 1, a > b
-	a := 0.5
-	b := 0.5
+	a := 0.3
+	b := 0.7
 
 	lastWantHaveResponseTime := prt.lastWantHaveResponseTime(p)
 	wantBlockResponseDownloadAvg := prt.wantBlockResponseDownloadAvg(p)
 
 	fmt.Println("(GetValue) Peer: ", p, ", lastWantHaveResponseTime: ", lastWantHaveResponseTime, ", wantBlockResponseDownloadAvg: ", wantBlockResponseDownloadAvg)
-
-	peerValue := 1 / (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg)
+	
+	peerValue := math.Pow(2, 1 / (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg)) 
 
 	return peerValue
 }
