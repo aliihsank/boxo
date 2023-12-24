@@ -99,7 +99,7 @@ func (prt *peerResponseTracker) getPeerValue(p peer.ID) float64 {
 	
 	baseInversePeerValue := (a * lastWantHaveResponseTime + b * wantBlockResponseDownloadAvg)
 
-	inversePeerValue := math.Pow(baseInversePeerValue, 15)
+	inversePeerValue := baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue * baseInversePeerValue
 
 	peerValue := 1 / inversePeerValue
 
