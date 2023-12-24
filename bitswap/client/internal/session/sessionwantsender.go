@@ -414,16 +414,6 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 
 			dontHaves.Add(c)
 
-			// keep track of current response duration of Want-Have response
-			if wi, ok := sws.wants[c]; ok {
-
-				if(wi.wantHaveSendTime[upd.from] != 0){
-					responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
-					fmt.Println("Received Want-Have response from: ", upd.from, ", BPDontHave", ", Duration: ", responseDuration)
-					sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
-				}
-			}
-
 			// Update the block presence for the peer
 			sws.updateWantBlockPresence(c, upd.from)
 
@@ -435,6 +425,16 @@ func (sws *sessionWantSender) processUpdates(updates []update) []cid.Cid {
 				// sentTo so that we can send the want to another peer
 				if sentTo, ok := sws.getWantSentTo(c); ok && sentTo == upd.from {
 					sws.setWantSentTo(c, "")
+				}
+			}else{
+				// keep track of current response duration of Want-Have response
+				if wi, ok := sws.wants[c]; ok {
+
+					if(wi.wantHaveSendTime[upd.from] != 0){
+						responseDuration := time.Now().UnixMilli() - wi.wantHaveSendTime[upd.from]
+						fmt.Println("Received Want-Have response from: ", upd.from, ", BPDontHave", ", Duration: ", responseDuration)
+						sws.peerRspTrkr.receivedWantHaveResponse(upd.from, responseDuration)
+					}
 				}
 			}
 		}
